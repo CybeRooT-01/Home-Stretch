@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use App\Http\Resources\UserRessource;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\EtudiantController;
 use App\Http\Controllers\UserController;
 
 /*
@@ -20,6 +21,7 @@ use App\Http\Controllers\UserController;
 Route::post('login', [AuthController::class, 'login']);
 
 Route::middleware('auth:api')->group(function () {
+    Route::post('/etudiants',[EtudiantController::class, 'inscription']);
 
   Route::get('user', function (Request $request) {
     return new UserRessource($request->user());
