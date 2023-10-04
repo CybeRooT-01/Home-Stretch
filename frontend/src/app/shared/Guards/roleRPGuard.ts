@@ -7,16 +7,16 @@ import {
   Router,
 } from '@angular/router';
 import { Observable, Subscribable, of } from 'rxjs';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '../../services/auth.service';
 import { tap, map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
 })
-export class RoleGuard implements CanActivate {
+export class RoleRPGuard implements CanActivate {
   constructor(private authService: AuthService, private router: Router) {}
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): any {
-    const allowedRoles = ['RP', 'Attache'];
+    const allowedRoles = ['RP'];
     return this.authService.getCurrentUser().pipe(
       tap((response: any) => {
         // console.log(response);

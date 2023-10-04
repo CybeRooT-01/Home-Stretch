@@ -5,7 +5,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { RegisterComponent } from './register/register.component';
 import { FormsModule } from '@angular/forms';
 import { DashboardComponent } from '../dashboard/dashboard/dashboard.component';
-import { AuthGuard } from '../shared/AuthGuards';
+import { AuthGuard } from '../shared/Guards/AuthGuards';
 
 const authRoutes: Routes = [
   { path: 'login', component: LoginComponent },

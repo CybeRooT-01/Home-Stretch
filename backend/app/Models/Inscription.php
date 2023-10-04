@@ -14,5 +14,6 @@ class Inscription extends Model
     protected $fillable = [
         "etudiant_id",
         "annee_id",
+        "classe_id "
     ];
 }

@@ -1,0 +1,59 @@
+<form [formGroup]="formulaire" (ngSubmit)="onSubmit()">
+  <span class="text-red-600"
+        *ngIf="formulaire.hasError('heureDebutSuperieurAHeureFin') && formulaire.get('heureDebut')?.touched && formulaire.get('heureFin')?.touched"
+  >L'heure de debut Ne peux pas etre superieur ou egal a l'heure de fin</span>
+  <div class="grid md:grid-cols-2 md:gap-6">
+    <mat-form-field>
+      <mat-label>Heure de debut</mat-label>
+      <mat-select formControlName="heureDebut">
+        <mat-option *ngFor="let hdebut of heureDebut" [value]="hdebut.value">
+          {{ hdebut.heure }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Heure de fin</mat-label>
+      <mat-select formControlName="heureFin">
+        <mat-option *ngFor="let hfin of HeureFin" [value]="hfin.value">
+          {{ hfin.heure }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Selectionnez une salle</mat-label>
+      <mat-select formControlName="salle">
+        <mat-option *ngFor="let salle of salles" [value]="salle.id">
+          {{ salle.nom }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Selectionnez un cour</mat-label>
+      <mat-select formControlName="cours">
+        <mat-option *ngFor="let cour of cours" [value]="cour.id">
+          {{ cour.module }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+
+    <mat-form-field class="w-[480px]">
+      <mat-label>Choisissez une date</mat-label>
+      <input readonly="true" matInput [matDatepicker]="picker" formControlName="date"/>
+      <mat-hint>MM/DD/YYYY</mat-hint>
+      <mat-datepicker-toggle matIconSuffix [for]="picker">
+        <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+      </mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+  </div>
+
+  <button
+    [disabled]="!formulaire.valid"
+    [ngClass]="{ 'disabled-button': !formulaire.valid }"
+    type="submit"
+    class="mt-5 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+  >
+    Submit
+  </button>
+</form>

@@ -1,4 +1,3 @@
-export interface RestREsponse<T> {
+export interface RestResponse<T> {
   id: number;
-  libelle?: string;
 }

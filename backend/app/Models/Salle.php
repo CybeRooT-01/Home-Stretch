@@ -10,4 +10,14 @@ class Salle extends Model
 {
     use HasFactory;
     use SoftDeletes;
+    protected $fillable = [
+        'nom',
+        'capacite',
+        'numero',
+    ];
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+        'deleted_at'
+    ];
 }

@@ -28,6 +28,7 @@ class EtudiantController extends Controller
                 $inscription = Inscription::create([
                     "etudiant_id" => $etudiant->id,
                     "annee_id" => $eleve['annee_id'],
+                    "classe_id" => $eleve['classe_id'],
                 ]);
 
                 $etudiants[] = $etudiant;

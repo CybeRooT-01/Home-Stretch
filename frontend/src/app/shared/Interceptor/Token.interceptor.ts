@@ -4,7 +4,7 @@ import {
   HttpRequest,
   HttpHandler,
 } from '@angular/common/http';
-import { AuthService } from '../services/auth.service'; // Assurez-vous d'importer le service d'authentification
+import { AuthService } from '../../services/auth.service'; // Assurez-vous d'importer le service d'authentification
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
@@ -19,7 +19,7 @@ export class TokenInterceptor implements HttpInterceptor {
           Authorization: `Bearer ${authToken}`,
         },
       });
-      console.log(authRequest);
+      // console.log(authRequest);
 
       return next.handle(authRequest);
     }

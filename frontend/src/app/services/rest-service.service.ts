@@ -2,13 +2,13 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {Environnements} from 'src/environements/environnements';
 import {catchError, Observable, tap, throwError} from 'rxjs';
-import { RestREsponse } from '../interfaces/RestResponse';
+import { RestResponse } from '../interfaces/RestResponse';
 import notification from 'sweetalert2';
 
 @Injectable({
   providedIn: 'root',
 })
-export abstract class RestService<T extends RestREsponse<T>> {
+export abstract class RestService<T extends RestResponse<T>> {
   constructor(public http: HttpClient) {}
 
   abstract uri(): string;

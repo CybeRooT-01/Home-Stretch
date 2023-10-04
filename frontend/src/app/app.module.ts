@@ -7,7 +7,10 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { NotFoundComponent } from './not-found/not-found.component';
-import { TokenInterceptor } from './shared/Token.interceptor';
+import { TokenInterceptor } from './shared/Interceptor/Token.interceptor';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ReactiveFormsModule } from '@angular/forms';
+
 @NgModule({
   declarations: [AppComponent, NotFoundComponent],
   imports: [
@@ -17,6 +20,8 @@ import { TokenInterceptor } from './shared/Token.interceptor';
     HttpClientModule,
     DashboardModule,
     SweetAlert2Module.forRoot(),
+    BrowserAnimationsModule,
+    ReactiveFormsModule,
   ],
   providers: [
     {
