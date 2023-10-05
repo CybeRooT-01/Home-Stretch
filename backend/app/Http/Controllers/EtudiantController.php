@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\InscriptionRequests;
+use App\Models\Classe;
 use App\Models\Etudiant;
 use App\Models\Inscription;
 use Illuminate\Support\Facades\DB;
@@ -13,44 +14,61 @@ class EtudiantController extends Controller
 {
     public function inscription(Request $request)
     {
-        DB::beginTransaction();
-        try {
-            $etudiants = [];
-            $inscriptions = [];
+        $etudiants = [];
+        $inscriptions = [];
+        $inscriptionsErronees = [];
 
-            foreach ($request->json() as $eleve) {
+        foreach ($request->json() as $eleve) {
+            $classeId = $eleve['classe_id'];
+            $classe = Classe::find($classeId);
+//            return response()->json($classe);
+            if (!$classe) {
+                $inscriptionsErronees[] = [
+                    "eleve" => $eleve,
+                    "message" => "La classe n'a pas été trouvée"
+                ];
+                continue;
+            }
+
+            if ($classe->etat == false) {
+                $inscriptionsErronees[] = [
+                    "eleve" => $eleve,
+                    "message" => "La classe n'est pas encore ouverte"
+                ];
+                continue;
+            }
+
+            DB::beginTransaction();
+            try {
                 $etudiant = Etudiant::create([
                     "nomComplet" => $eleve['nomComplet'],
                     "email" => $eleve['email'],
                     "matricule" => $eleve['matricule'],
                 ]);
-
                 $inscription = Inscription::create([
                     "etudiant_id" => $etudiant->id,
                     "annee_id" => $eleve['annee_id'],
                     "classe_id" => $eleve['classe_id'],
                 ]);
-
                 $etudiants[] = $etudiant;
                 $inscriptions[] = $inscription;
+
+                DB::commit();
+
+            } catch (\Exception $e) {
+                DB::rollBack();
+                $inscriptionsErronees[] = [
+                    "eleve" => $eleve,
+                    "message" => "Erreur d'inscription : " . $e->getMessage(),
+                ];
             }
-
-            DB::commit();
-
-            return response()->json([
-                "message" => "Inscription effectuée avec succès",
-                "etudiants" => $etudiants,
-                "inscriptions" => $inscriptions,
-                "status"=>201
-            ]);
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return response()->json([
-                "message" => "Erreur d'inscription",
-                "error" => $e->getMessage(),
-            ], 500);
         }
+        return response()->json([
+            "message" => "Inscriptions effectuées avec succès",
+            "etudiants" => $etudiants,
+            "inscriptions" => $inscriptions,
+            "inscriptions_erronees" => $inscriptionsErronees,
+            "status" => 201
+        ]);
     }
-
-
 }

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
-import { AuthGuard } from '../../shared/Guards/AuthGuards';
 import { RoleRPGuard } from '../../shared/Guards/roleRPGuard';
 import { ActivatedRouteSnapshot, RouterStateSnapshot} from '@angular/router';
 @Component({

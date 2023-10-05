@@ -25,6 +25,8 @@ class InscriptionRequests extends FormRequest
             "*.nomComplet" => "required|max:50",
             "*.email" => "required|email|unique:etudiants",
             "*.matricule" => "required|min:3|max:50",
+            "*.annee_id" => "required",
+            "*.classe_id" => "required",
         ];
     }
     public function messages(): array
@@ -38,6 +40,8 @@ class InscriptionRequests extends FormRequest
             "*.matricule.min" => "Le matricule doit avoir au moins 3 caractères",
             "*.matricule.max" => "Le matricule ne doit pas dépasser 50 caractères",
             "*.email.unique" => "Cet email est déjà utilisé",
+            "*.annee_id.required" => "L'année est obligatoire",
+            "*.classe_id.required" => "La classe est obligatoire",
         ];
     }
 }

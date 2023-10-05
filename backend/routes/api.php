@@ -1,7 +1,10 @@
 <?php
 
+use App\Http\Controllers\ClasseController;
 use App\Http\Controllers\CoursController;
 use App\Http\Controllers\InscriptionController;
+use App\Http\Controllers\ModuleController;
+use App\Http\Controllers\ProfesseurController;
 use App\Http\Controllers\SalleController;
 use App\Http\Controllers\SessionCoursController;
 use Illuminate\Http\Request;
@@ -26,11 +29,18 @@ Route::post('/sessioncours',[SessionCoursController::class, 'store']);
 Route::get('/cours',[CoursController::class, 'index']);
 Route::get('/salles',[SalleController::class, 'index']);
 Route::get('inscription', [InscriptionController::class, 'index']);
+Route::get('/classes', [ClasseController::class, 'index']);
+Route::post('/cours', [CoursController::class, 'store']);
+Route::get('/profs', [ProfesseurController::class, 'index']);
+Route::get('/modules', [ModuleController::class, 'index']);
+Route::post('/etudiants',[EtudiantController::class, 'inscription']);
+
+
+
 
 Route::post('login', [AuthController::class, 'login']);
 
 Route::middleware('auth:api')->group(function () {
-    Route::post('/etudiants',[EtudiantController::class, 'inscription']);
 
   Route::get('user', function (Request $request) {
     return new UserRessource($request->user());

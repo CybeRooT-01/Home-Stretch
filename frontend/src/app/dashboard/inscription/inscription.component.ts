@@ -1,16 +1,25 @@
-import { Component } from '@angular/core';
+import { Component, OnChanges, SimpleChanges} from '@angular/core';
 import * as XLSX from 'xlsx';
-import { EtudiantService } from '../../services/etudiant.service';
+import {EtudiantService} from '../../services/etudiant.service';
 import Swal from 'sweetalert2';
+
 @Component({
   selector: 'app-inscription',
   templateUrl: './inscription.component.html',
   styleUrls: ['./inscription.component.css'],
 })
-export class InscriptionComponent {
+
+export class InscriptionComponent implements OnChanges {
   excelData: any;
   fileSelected: boolean = false;
-  constructor(private etudiantservice: EtudiantService) {}
+
+  constructor(private etudiantservice: EtudiantService) {
+  }
+
+  ngOnChanges() {
+    // console.log("error "+ this.inscriptionErronee);
+
+  }
   readExcel(event: any) {
     let file = event.target.files[0];
     this.fileSelected = true;
@@ -22,10 +31,22 @@ export class InscriptionComponent {
       this.excelData = XLSX.utils.sheet_to_json(workbook.Sheets[sheetNames[0]]);
     };
   }
+  inscriptionErronee: any[] = [];
   inscription() {
     this.etudiantservice.create(this.excelData).subscribe(
       (res: any) => {
         console.log(res);
+        this.inscriptionErronee = res.inscriptions_erronees.map((item: any) => {
+          return {
+            nomComplet: item.eleve.nomComplet,
+            email: item.eleve.email,
+            matricule: item.eleve.matricule,
+            annee_id: item.eleve.annee_id,
+            classe_id: item.eleve.classe_id,
+            message: item.message,
+          }
+        });
+        this.dataSource = this.inscriptionErronee;
         const inputFiles = document.getElementById(
           'multiple_files'
         ) as HTMLInputElement;
@@ -45,4 +66,6 @@ export class InscriptionComponent {
       }
     );
   }
+  displayedColumns: string[] = ['nomComplet', 'email', 'matricule'];
+  dataSource:any[] = this.inscriptionErronee;
 }

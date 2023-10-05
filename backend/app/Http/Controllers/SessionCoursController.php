@@ -48,6 +48,7 @@ class SessionCoursController extends Controller
         //si y'a une heure dans cette intervalle
         $coursChevauches = SessionCours::where('date', $date)
             ->where('salle_id', $salleId)
+            ->where('classe_id', $classeId)
             ->where(function ($query) use ($heureDebut, $heureFin) {
                 $query->whereBetween('heure_debut', [$heureDebut, $heureFin])
                     ->orWhereBetween('heure_fin', [$heureDebut, $heureFin]);

@@ -5,6 +5,11 @@ import {CoursService} from "../../services/cours.service";
 import {Cours} from "../../interfaces/Cours";
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {BirahimValidator} from "../../validators/birahim.validator";
+import {Classes} from "../../interfaces/Classes";
+import {ClasseService} from "../../services/classe.service";
+import {SessionCoursService} from "../../services/session-cours.service";
+import notification from 'sweetalert2';
+import {catchError} from "rxjs";
 
 @Component({
   selector: 'app-planification',
@@ -14,17 +19,20 @@ import {BirahimValidator} from "../../validators/birahim.validator";
 export class PlanificationComponent implements OnInit {
   salles: Salles[] = [];
   cours: Cours[] = [];
+  classes: Classes[] = [];
   formulaire: FormGroup;
 
-  constructor(private salleservice: SallesService, private courService: CoursService, private fb: FormBuilder) {
+  constructor(private sessioncoursservice: SessionCoursService, private salleservice: SallesService, private classeservice: ClasseService, private courService: CoursService, private fb: FormBuilder) {
     this.formulaire = this.fb.group({
       salle: ['', Validators.required],
       cours: ['', Validators.required],
       date: ['', Validators.required],
       heureDebut: ['', Validators.required],
       heureFin: ['', Validators.required],
-    },{validators: BirahimValidator.heureDebutSuperieurAHeureFin});
+      classe: ['', Validators.required],
+    }, {validators: BirahimValidator.heureDebutSuperieurAHeureFin});
   }
+
   onSubmit() {
     if (this.formulaire.valid) {
       const formData = this.formulaire.value;
@@ -32,6 +40,26 @@ export class PlanificationComponent implements OnInit {
       let dateformated = dateformatedwithbadformat.split('/').reverse().join('-');
       formData.date = dateformated;
       console.log(formData);
+      let data: any = {
+        cour_id: formData.cours,
+        classe_id: formData.classe,
+        salle_id: formData.salle,
+        date: formData.date,
+        heure_debut: formData.heureDebut,
+        heure_fin: formData.heureFin,
+      }
+      this.sessioncoursservice.create(data).subscribe((data: any) => {
+          console.log(data);
+
+        }, (error: any) => {
+          console.error('Une erreur s\'est produite lors de la création :', error);
+          notification.fire({
+            title: 'Erreur',
+            icon: 'error',
+            text: error.message
+          });
+        }
+      )
     } else {
       console.log('Formulaire invalide');
     }
@@ -43,6 +71,9 @@ export class PlanificationComponent implements OnInit {
     });
     this.courService.All().subscribe((data: Cours[]) => {
       this.cours = data;
+    });
+    this.classeservice.All().subscribe((data: Classes[]) => {
+      this.classes = data;
     });
   }
 

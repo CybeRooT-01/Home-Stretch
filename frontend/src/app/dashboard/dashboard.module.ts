@@ -14,8 +14,10 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
+import {MatButtonModule} from '@angular/material/button';
 import { ReactiveFormsModule } from '@angular/forms';
-
+import { CoursComponent } from './cours/cours.component';
+import {MatTableModule} from '@angular/material/table';
 const authRoutes: Routes = [
   {
     path: '',
@@ -35,6 +37,10 @@ const authRoutes: Routes = [
         path: 'planification',
         component: PlanificationComponent,
       },
+      {
+        path: 'cours',
+        component: CoursComponent,
+      }
     ],
   },
 ];
@@ -45,8 +51,10 @@ const authRoutes: Routes = [
     InscriptionComponent,
     SessionCoursComponent,
     PlanificationComponent,
+    CoursComponent,
   ],
   imports: [
+    MatTableModule,
     CommonModule,
     RouterModule.forChild(authRoutes),
     FullCalendarModule,

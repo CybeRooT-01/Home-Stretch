@@ -1,0 +1,34 @@
+<form [formGroup]="formulaire" (ngSubmit)="onSubmit()" >
+<div class="flex justify-between">
+  <mat-form-field class="example-full-width">
+    <mat-label>Quota Horaire Globale</mat-label>
+    <input matInput placeholder="Ex.10" formControlName="quota" (input)="validateInput($event)">
+  </mat-form-field>
+<mat-form-field>
+  <mat-label>Module</mat-label>
+  <mat-select formControlName="module">
+    <mat-option *ngFor="let module of modules" [value]="module.id">
+      {{module.libelle}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+<mat-form-field>
+  <mat-label>Professeur</mat-label>
+  <mat-select formControlName="prof">
+    <mat-option *ngFor="let prof of profs" [value]="prof.id">
+      {{prof.nomComplet}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+</div>
+  <div>
+    <button
+      [disabled]="!formulaire.valid"
+      [ngClass]="{ 'disabled-button': !formulaire.valid }"
+      type="submit"
+      class="mt-5 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+    >
+      Submit
+    </button>
+  </div>
+</form>

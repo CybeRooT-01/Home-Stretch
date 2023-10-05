@@ -28,6 +28,14 @@
       </mat-select>
     </mat-form-field>
     <mat-form-field>
+      <mat-label>Selectionnez une classe</mat-label>
+      <mat-select formControlName="classe">
+        <mat-option *ngFor="let classe of classes" [value]="classe.id">
+          {{ classe.libelle }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
       <mat-label>Selectionnez un cour</mat-label>
       <mat-select formControlName="cours">
         <mat-option *ngFor="let cour of cours" [value]="cour.id">
@@ -37,7 +45,7 @@
     </mat-form-field>
 
 
-    <mat-form-field class="w-[480px]">
+    <mat-form-field class="w-[600px]">
       <mat-label>Choisissez une date</mat-label>
       <input readonly="true" matInput [matDatepicker]="picker" formControlName="date"/>
       <mat-hint>MM/DD/YYYY</mat-hint>
