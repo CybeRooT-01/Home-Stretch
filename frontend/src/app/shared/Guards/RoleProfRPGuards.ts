@@ -13,13 +13,13 @@ import { tap, map } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root',
 })
-export class RoleRPGuard implements CanActivate {
+export class RoleProfRPGuards implements CanActivate {
   constructor(private authService: AuthService, private router: Router) {}
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): any {
-    const allowedRoles = ['RP'];
+    const allowedRoles = ['Professeu', 'RP'];
     return this.authService.getCurrentUser().pipe(
       tap((response: any) => {
-        // console.log(response);
+        console.log(response);
       }),
       map((response: any) => {
         const userRoles = response.data.role;
@@ -27,11 +27,10 @@ export class RoleRPGuard implements CanActivate {
         const hasPermission = allowedRoles.some((role) =>
           userRoles.includes(role)
         );
-        if (!hasPermission && (state.url === '/inscription' || state.url === '/planification' || state.url === '/cours')) {
+        if (!hasPermission && state.url === '/inscription') {
           this.router.navigate(['/404']);
         }
-
-
+        console.log(hasPermission)
         return hasPermission;
       })
     );

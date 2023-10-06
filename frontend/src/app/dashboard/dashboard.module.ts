@@ -14,10 +14,10 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
-import {MatButtonModule} from '@angular/material/button';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CoursComponent } from './cours/cours.component';
 import {MatTableModule} from '@angular/material/table';
+import {RoleProfRPGuards} from "../shared/Guards/RoleProfRPGuards";
 const authRoutes: Routes = [
   {
     path: '',
@@ -32,14 +32,17 @@ const authRoutes: Routes = [
       {
         path: 'sessioncours',
         component: SessionCoursComponent,
+        canActivate: [RoleProfRPGuards]
       },
       {
         path: 'planification',
         component: PlanificationComponent,
+        canActivate: [RoleRPGuard],
       },
       {
         path: 'cours',
         component: CoursComponent,
+        canActivate: [RoleRPGuard],
       }
     ],
   },

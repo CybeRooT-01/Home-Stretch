@@ -19,6 +19,7 @@ class CoursRessources extends JsonResource
             'quota_horaire_globale'=>$this->quota_horaire_globale,
             'module'=>$this->module->libelle,
             'nom_professeur'=>$this->professeur->nomComplet,
+            'idProfesseur'=>$this->professeur->id,
             'specialite_professeur'=>$this->professeur->specialite,
             'grade_profeseur'=>$this->professeur->grade
         ];

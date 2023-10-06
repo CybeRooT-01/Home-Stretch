@@ -7,7 +7,7 @@ import {initFlowbite} from "flowbite";
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit{
-  title = 'frontend';
+  title = 'Gestion des cours';
 
   ngOnInit(): void {
     initFlowbite();

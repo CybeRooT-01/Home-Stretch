@@ -15,4 +15,9 @@ class Etudiant extends Model
         "email",
         "matricule",
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

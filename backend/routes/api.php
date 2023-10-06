@@ -34,6 +34,7 @@ Route::post('/cours', [CoursController::class, 'store']);
 Route::get('/profs', [ProfesseurController::class, 'index']);
 Route::get('/modules', [ModuleController::class, 'index']);
 Route::post('/etudiants',[EtudiantController::class, 'inscription']);
+Route::post('/register',[UserController::class, 'store']);
 
 
 
@@ -45,6 +46,7 @@ Route::middleware('auth:api')->group(function () {
   Route::get('user', function (Request $request) {
     return new UserRessource($request->user());
   });
+//    Route::get('/user',[UserController::class, 'getCurrentUser']);
 
   Route::get('users', [UserController::class, 'allUsers']);
 

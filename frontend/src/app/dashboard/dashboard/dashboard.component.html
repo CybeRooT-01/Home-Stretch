@@ -31,11 +31,13 @@
                 >Session Cours</a
               >
               <a
+                *ngIf="showLink"
                 routerLink="/planification"
                 class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
                 >Planifier des Session Cours</a
               >
               <a
+                *ngIf="showLink"
                 routerLink="/cours"
                 class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
               >Cours</a
@@ -181,11 +183,13 @@
           >Session de cours</a
         >
         <a
+          *ngIf="showLink"
           routerLink="/planification"
           class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
           >planifier Session de cours</a
         >
         <a
+          *ngIf="showLink"
           routerLink="/cours"
           class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
         >Cours</a

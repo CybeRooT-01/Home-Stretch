@@ -4,7 +4,7 @@
     [options]="calendarOptions"
   ></full-calendar>
 </div>
-  <div class=" h-[550px] ml-[40px] w-full max-w-sm p-4 bg-blue-500 border border-gray-200 rounded-lg shadow sm:p-6">
+  <div class=" h-[620px] ml-[40px] w-full max-w-sm p-4 bg-blue-500 border border-gray-200 rounded-lg shadow sm:p-6">
     <h5 class="mb-3 text-base font-semibold text-gray-900 md:text-xl dark:text-white">
     </h5>
     <p class="text-sm font-normal text-center text-white">Informations du Cours planifié</p>
@@ -51,41 +51,35 @@
           <span class="flex-1 ml-3 whitespace-nowrap">Salle : <span>{{salleToDisplay ? salleToDisplay : '...'}}</span> </span>
         </a>
       </li>
+      <button *ngIf="isProf" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-1 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-white dark:hover:bg-blue-400 hover:text-white focus:outline-none dark:focus:ring-blue-800" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        Demander annulation du cour
+      </button>
     </ul>
-    <button type="button"  data-modal-target="defaultModal" data-modal-toggle="defaultModal" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-1 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-white dark:hover:bg-blue-400 hover:text-white focus:outline-none dark:focus:ring-blue-800">Demander une annulation</button>
+
   </div>
 </div>
+<!-- Button trigger modal -->
 
 
-<!-- Main modal -->
-<div id="defaultModal" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
-  <div class="relative w-full max-w-2xl max-h-full">
-    <!-- Modal content -->
-    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-      <!-- Modal header -->
-      <div class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
-        <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-          Demande d'annulation de cours
-        </h3>
-        <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="defaultModal">
-          <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-          </svg>
-          <span class="sr-only">Close modal</span>
-        </button>
+<!-- Modal -->
+<div class="modal fade"  id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Demande d'annulation de cours</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <!-- Modal body -->
-
-      <label for="message" class="block m-2 text-sm font-medium text-gray-900 dark:text-white">Ecrivez vos motifs de demande</label>
-      <textarea id="message" rows="4" class=" m-2 block p-2.5 w-[650px] text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..."></textarea>
-
-      <!-- Modal footer -->
-      <div class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
-        <button data-modal-hide="defaultModal" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Demander</button>
-        <button data-modal-hide="defaultModal" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Annuler</button>
+      <div class="modal-body">
+        <label for="message" class="block m-2 text-sm font-medium text-gray-900 dark:text-white">Ecrivez vos motifs de demande</label>
+        <textarea id="message" rows="4" class=" m-2 block p-2.5 w-[460px] text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Votre motif, soyez bref..."></textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="bg-red-700 text-white w-[100px] h-[40px] rounded-2" data-bs-dismiss="modal">Annuler</button>
+        <button type="button" class="bg-blue-700 text-white w-[100px] h-[40px] rounded-2">Demander</button>
       </div>
     </div>
   </div>
 </div>
+
 
 

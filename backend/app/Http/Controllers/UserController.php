@@ -35,10 +35,10 @@ class UserController extends Controller
         DB::transaction(function () use ($request, &$user) {
             $user = User::create([
                 'nom' => $request->nom,
-                'telephone' => $request->telephone,
                 'password' => $request->password,
-                'poste' => $request->poste,
                 'login' => $request->login,
+                'role_id' => $request->role_id,
+                'email' => $request->email,
             ]);
         });
         return new UserRessource($user);
@@ -60,6 +60,12 @@ class UserController extends Controller
         //
     }
 
+//    public function getCurrentUser(Request $request)
+//    {
+//        return new UserRessource($request->user());
+//    }
+
+
     /**
      * Update the specified resource in storage.
      */
@@ -68,7 +74,6 @@ class UserController extends Controller
         DB::transaction(function () use ($request, &$user) {
             $user->update([
                 'nom' => $request->nom,
-                'telephone' => $request->telephone,
                 'password' => $request->password,
                 'login' => $request->login,
             ]);

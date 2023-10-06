@@ -29,6 +29,7 @@
     "@sweetalert2/ngx-sweetalert2": "^12.2.0",
     "@syncfusion/ej2-angular-calendars": "^23.1.38",
     "angular-calendar": "^0.31.0",
+    "bootstrap": "^5.3.2",
     "flowbite": "^1.8.1",
     "gapi": "^0.0.3",
     "gapi-client": "^0.0.3",

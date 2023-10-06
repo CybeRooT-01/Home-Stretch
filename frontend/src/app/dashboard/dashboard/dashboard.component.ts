@@ -11,11 +11,11 @@ export class DashboardComponent implements OnInit {
   showLink: any;
   user: any;
   menuOuvert: boolean = false;
-  constructor(private authService: AuthService, private roleGuard: RoleRPGuard) {}
+  constructor(private authService: AuthService, private roleRPGuard: RoleRPGuard) {}
   emptyRouteSnapshot: ActivatedRouteSnapshot = {} as ActivatedRouteSnapshot;
   emptyRouterStateSnapshot: RouterStateSnapshot = {} as RouterStateSnapshot;
   ngOnInit() {
-    this.showLink = this.roleGuard
+    this.showLink = this.roleRPGuard
       .canActivate(this.emptyRouteSnapshot, this.emptyRouterStateSnapshot)
       .subscribe((response: any) => {
         // console.log(response);
@@ -23,7 +23,7 @@ export class DashboardComponent implements OnInit {
       });
     this.authService.getCurrentUser().subscribe((response: any) => {
       this.user = response.data;
-      // console.log(this.user);
+      console.log(this.user);
     });
   }
   deconnecter() {
