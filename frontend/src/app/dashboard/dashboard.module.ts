@@ -14,10 +14,11 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
-import { ReactiveFormsModule } from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { CoursComponent } from './cours/cours.component';
 import {MatTableModule} from '@angular/material/table';
 import {RoleProfRPGuards} from "../shared/Guards/RoleProfRPGuards";
+import { DemandeANnulationComponent } from './demande-annulation/demande-annulation.component';
 const authRoutes: Routes = [
   {
     path: '',
@@ -40,6 +41,11 @@ const authRoutes: Routes = [
         canActivate: [RoleRPGuard],
       },
       {
+        path:'demandeAnnulation',
+        component:DemandeANnulationComponent,
+        canActivate:[RoleRPGuard]
+      },
+      {
         path: 'cours',
         component: CoursComponent,
         canActivate: [RoleRPGuard],
@@ -55,6 +61,7 @@ const authRoutes: Routes = [
     SessionCoursComponent,
     PlanificationComponent,
     CoursComponent,
+    DemandeANnulationComponent,
   ],
   imports: [
     MatTableModule,
@@ -68,6 +75,7 @@ const authRoutes: Routes = [
     MatIconModule,
     MatSelectModule,
     ReactiveFormsModule,
+    FormsModule,
   ],
   providers: [],
 })

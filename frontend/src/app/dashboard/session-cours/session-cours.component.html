@@ -1,57 +1,72 @@
 <div class="flex">
-<div class="w-2/3 overflow-scroll">
-  <full-calendar
-    [options]="calendarOptions"
-  ></full-calendar>
-</div>
+  <div class="w-2/3 overflow-scroll">
+    <full-calendar
+      [options]="calendarOptions"
+    ></full-calendar>
+  </div>
   <div class=" h-[620px] ml-[40px] w-full max-w-sm p-4 bg-blue-500 border border-gray-200 rounded-lg shadow sm:p-6">
     <h5 class="mb-3 text-base font-semibold text-gray-900 md:text-xl dark:text-white">
     </h5>
     <p class="text-sm font-normal text-center text-white">Informations du Cours planifié</p>
     <ul class="my-4 space-y-3">
       <li>
-        <a class="cursor-pointer flex items-center p-3 text-base font-bold text-gray-900 rounded-lg bg-white hover:bg-gray-200 group hover:shadow">
+        <a
+          class="cursor-pointer flex items-center p-3 text-base font-bold text-gray-900 rounded-lg bg-white hover:bg-gray-200 group hover:shadow">
           <i class="fa-solid fa-house"></i>
-          <span class="flex-1 ml-3 whitespace-nowrap">Classe : <span>{{classeToDisplay ? classeToDisplay : '...'}}</span> </span>
+          <span
+            class="flex-1 ml-3 whitespace-nowrap">Classe : <span>{{classeToDisplay ? classeToDisplay : '...'}}</span> </span>
         </a>
       </li>
       <li>
-        <a class="cursor-pointer flex items-center p-3 text-base font-bold text-gray-900 rounded-lg bg-white hover:bg-gray-200 group hover:shadow">
+        <a
+          class="cursor-pointer flex items-center p-3 text-base font-bold text-gray-900 rounded-lg bg-white hover:bg-gray-200 group hover:shadow">
           <i class="fa-solid fa-chalkboard-user"></i>
-          <span class="flex-1 ml-3 whitespace-nowrap">Professeur : <span>{{profToDisplay ? profToDisplay : '...'}}</span> </span>
+          <span
+            class="flex-1 ml-3 whitespace-nowrap">Professeur : <span>{{profToDisplay ? profToDisplay : '...'}}</span> </span>
         </a>
       </li>
       <li>
-        <a class="cursor-pointer flex items-center p-3 text-base font-bold text-gray-900 rounded-lg bg-white hover:bg-gray-200 group hover:shadow">
+        <a
+          class="cursor-pointer flex items-center p-3 text-base font-bold text-gray-900 rounded-lg bg-white hover:bg-gray-200 group hover:shadow">
           <i class="fa-solid fa-book"></i>
           <span class="flex-1 ml-3 whitespace-nowrap">Cours : <span>{{coursToDisaplay ? coursToDisaplay : '...'}}</span> </span>
         </a>
       </li>
       <li>
-        <a class="cursor-pointer flex items-center p-3 text-base font-bold text-gray-900 rounded-lg bg-white hover:bg-gray-200 group hover:shadow">
+        <a
+          class="cursor-pointer flex items-center p-3 text-base font-bold text-gray-900 rounded-lg bg-white hover:bg-gray-200 group hover:shadow">
           <i class="fa-solid fa-code-branch"></i>
-          <span class="flex-1 ml-3 whitespace-nowrap">Filiere : <span> {{filiereToDisplay ? filiereToDisplay : '...'}} </span> </span>
+          <span
+            class="flex-1 ml-3 whitespace-nowrap">Filiere : <span> {{filiereToDisplay ? filiereToDisplay : '...'}} </span> </span>
         </a>
       </li>
       <li>
-        <a class="cursor-pointer flex items-center p-3 text-base font-bold text-gray-900 rounded-lg bg-white hover:bg-gray-200 group hover:shadow">
+        <a
+          class="cursor-pointer flex items-center p-3 text-base font-bold text-gray-900 rounded-lg bg-white hover:bg-gray-200 group hover:shadow">
           <i class="fa-solid fa-calendar-days"></i>
-          <span class="flex-1 ml-3 whitespace-nowrap">Date : <span>{{dateToDisplay ? dateToDisplay : '...'}}</span> </span>
+          <span
+            class="flex-1 ml-3 whitespace-nowrap">Date : <span>{{dateToDisplay ? dateToDisplay : '...'}}</span> </span>
         </a>
       </li>
       <li>
-        <a class="cursor-pointer flex items-center p-3 text-base font-bold text-gray-900 rounded-lg bg-white hover:bg-gray-200 group hover:shadow">
+        <a
+          class="cursor-pointer flex items-center p-3 text-base font-bold text-gray-900 rounded-lg bg-white hover:bg-gray-200 group hover:shadow">
           <i class="fa-solid fa-hourglass-start"></i>
-          <span class="flex-1 ml-3 whitespace-nowrap">Horaire : <span>{{horairesToDisplay ? horairesToDisplay : '...'}}</span> </span>
+          <span
+            class="flex-1 ml-3 whitespace-nowrap">Horaire : <span>{{horairesToDisplay ? horairesToDisplay : '...'}}</span> </span>
         </a>
       </li>
       <li>
-        <a class="cursor-pointer flex items-center p-3 text-base font-bold text-gray-900 rounded-lg bg-white hover:bg-gray-200 group hover:shadow">
+        <a
+          class="cursor-pointer flex items-center p-3 text-base font-bold text-gray-900 rounded-lg bg-white hover:bg-gray-200 group hover:shadow">
           <i class="fa-solid  fa-school"></i>
           <span class="flex-1 ml-3 whitespace-nowrap">Salle : <span>{{salleToDisplay ? salleToDisplay : '...'}}</span> </span>
         </a>
       </li>
-      <button *ngIf="isProf" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-1 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-white dark:hover:bg-blue-400 hover:text-white focus:outline-none dark:focus:ring-blue-800" data-bs-toggle="modal" data-bs-target="#exampleModal">
+      <button [ngClass]="{ 'disabled-button': !isCourSelected }"
+              [disabled]="!isCourSelected" *ngIf="isProf" type="button"
+              class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-1 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-white dark:hover:bg-blue-400 hover:text-white focus:outline-none dark:focus:ring-blue-800"
+              data-bs-toggle="modal" data-bs-target="#exampleModal">
         Demander annulation du cour
       </button>
     </ul>
@@ -62,20 +77,30 @@
 
 
 <!-- Modal -->
-<div class="modal fade"  id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="exampleModalLabel">Demande d'annulation de cours</h1>
+
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
+      <p *ngIf="isInsulte" class="bg-yellow-500 text-white text-center">VEILLEZ EVITER LES INSULTES VOTRE TEXT SERA
+        ENVOYER AU SUPERIEUR</p>
       <div class="modal-body">
-        <label for="message" class="block m-2 text-sm font-medium text-gray-900 dark:text-white">Ecrivez vos motifs de demande</label>
-        <textarea id="message" rows="4" class=" m-2 block p-2.5 w-[460px] text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Votre motif, soyez bref..."></textarea>
+        <label for="message" class="block m-2 text-sm font-medium text-gray-900 dark:text-white">Ecrivez vos motifs de
+          demande</label>
+        <textarea [(ngModel)]="demande" (input)="checkInsulte($event)" id="message" rows="4"
+                  class=" m-2 block p-2.5 w-[460px] text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="Votre motif, soyez bref..."></textarea>
       </div>
       <div class="modal-footer">
-        <button type="button" class="bg-red-700 text-white w-[100px] h-[40px] rounded-2" data-bs-dismiss="modal">Annuler</button>
-        <button type="button" class="bg-blue-700 text-white w-[100px] h-[40px] rounded-2">Demander</button>
+        <button type="button" id="fermer" class="bg-red-700 text-white w-[100px] h-[40px] rounded-2"
+                data-bs-dismiss="modal">Annuler
+        </button>
+        <button (click)="demanderAnnulation()" type="button"
+                class="bg-blue-700 text-white w-[100px] h-[40px] rounded-2">Demander
+        </button>
       </div>
     </div>
   </div>

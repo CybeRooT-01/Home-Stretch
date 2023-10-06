@@ -44,7 +44,7 @@ export abstract class RestService<T extends RestResponse<T>> {
           notification.fire({
             title: 'Succès',
             icon: 'success',
-            text: 'Données ajoutées avec succès',
+            text: 'Données enregistrer avec succès',
           });
         }),
         catchError(this.handleError)

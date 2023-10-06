@@ -24,7 +24,6 @@ class CoursController extends Controller
             'professeur_id'=>$professeur_id
         ]);
         return response()->json(new CoursRessources($cours), 201);
-
-
     }
+
 }

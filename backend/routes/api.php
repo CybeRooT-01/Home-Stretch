@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ClasseController;
 use App\Http\Controllers\CoursController;
+use App\Http\Controllers\DemandeAnnulationController;
 use App\Http\Controllers\InscriptionController;
 use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\ProfesseurController;
@@ -35,6 +36,9 @@ Route::get('/profs', [ProfesseurController::class, 'index']);
 Route::get('/modules', [ModuleController::class, 'index']);
 Route::post('/etudiants',[EtudiantController::class, 'inscription']);
 Route::post('/register',[UserController::class, 'store']);
+
+Route::post("/demandeAnnulation", [DemandeAnnulationController::class, 'store']);
+Route::get("/demandeAnnulation", [DemandeAnnulationController::class, 'index']);
 
 
 

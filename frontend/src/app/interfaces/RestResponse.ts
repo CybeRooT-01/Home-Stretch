@@ -1,4 +1,4 @@
 export interface RestResponse<T> {
-  id: number;
+  id?: number;
   libelle?: string;
 }

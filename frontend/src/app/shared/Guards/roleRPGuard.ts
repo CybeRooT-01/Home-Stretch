@@ -27,11 +27,9 @@ export class RoleRPGuard implements CanActivate {
         const hasPermission = allowedRoles.some((role) =>
           userRoles.includes(role)
         );
-        if (!hasPermission && (state.url === '/inscription' || state.url === '/planification' || state.url === '/cours')) {
+        if (!hasPermission && (state.url === '/inscription' || state.url === '/planification' || state.url === '/cours' || state.url==='/demandeAnnulation')) {
           this.router.navigate(['/404']);
         }
-
-
         return hasPermission;
       })
     );

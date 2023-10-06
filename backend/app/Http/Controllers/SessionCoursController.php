@@ -15,7 +15,7 @@ class SessionCoursController extends Controller
 {
     public function index():JsonResponse
     {
-        $sessionCour = SessionCoursRessource::collection(SessionCours::all());
+        $sessionCour = SessionCoursRessource::collection(SessionCours::all()->where('validee',false));
         return response()->json($sessionCour,200);
     }
 

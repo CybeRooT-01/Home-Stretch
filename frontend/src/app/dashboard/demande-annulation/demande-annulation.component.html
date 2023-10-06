@@ -1,0 +1,56 @@
+
+<div class="relative overflow-x-auto">
+  <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+    <tr>
+      <th scope="col" class="px-6 py-3">
+        Salle
+      </th>
+      <th scope="col" class="px-6 py-3">
+        Horaire
+      </th>
+      <th scope="col" class="px-6 py-3">
+        Cours
+      </th>
+      <th scope="col" class="px-6 py-3">
+        Classe
+      </th>
+      <th scope="col" class="px-6 py-3">
+        Professeur
+      </th>
+      <th scope="col" class="px-6 py-3">
+        Motif
+      </th>
+      <th scope="col" class="px-6 py-3">
+        Action
+      </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let demande of demandes" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+      <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+        {{demande.sessionCours.salle.nom}}
+      </th>
+      <td class="px-6 py-4">
+        {{demande.sessionCours.heure_debut.substring(0,5)}} - {{demande.sessionCours.heure_fin.substring(0, 5)}}
+      </td>
+      <td class="px-6 py-4">
+        {{demande.sessionCours.cours.module}}
+      </td>
+      <td class="px-6 py-4">
+        {{demande.sessionCours.classe.libelle}}
+      </td>
+      <td class="px-6 py-4">
+        {{demande.professeur.nomComplet}}
+      </td>
+      <td class="px-6 py-4">
+        <textarea readonly value="{{demande.motif}}" class="w-[200px] h-[50px] border border-gray-300 rounded-lg"></textarea>
+      </td>
+      <td class="px-6 py-4 flex justify-around">
+        <i class="fa-solid fa-check text-2xl cursor-pointer" style="color: #17e83a;" title="Valider"></i>
+        <i class="fa-solid fa-x text-2xl cursor-pointer" style="color: #e50b0b;" title="annuler"></i>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
