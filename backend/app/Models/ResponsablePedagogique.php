@@ -6,19 +6,21 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Etudiant extends Model
+class ResponsablePedagogique extends Model
 {
     use HasFactory;
     use SoftDeletes;
+
     protected $fillable = [
         "nomComplet",
-        "email",
-        "matricule",
-        'user_id'
+        "adresse",
+        "telephone",
+        "user_id"
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class);
     }
+
 }

@@ -1,11 +1,13 @@
 <?php
 
+use App\Http\Controllers\AttacheController;
 use App\Http\Controllers\ClasseController;
 use App\Http\Controllers\CoursController;
 use App\Http\Controllers\DemandeAnnulationController;
 use App\Http\Controllers\InscriptionController;
 use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\ProfesseurController;
+use App\Http\Controllers\ResponsablePedagogiqueController;
 use App\Http\Controllers\SalleController;
 use App\Http\Controllers\SessionCoursController;
 use Illuminate\Http\Request;
@@ -33,6 +35,7 @@ Route::get('inscription', [InscriptionController::class, 'index']);
 Route::get('/classes', [ClasseController::class, 'index']);
 Route::post('/cours', [CoursController::class, 'store']);
 Route::get('/profs', [ProfesseurController::class, 'index']);
+Route::post('/profs', [ProfesseurController::class, 'store']);
 Route::get('/modules', [ModuleController::class, 'index']);
 Route::post('/etudiants',[EtudiantController::class, 'inscription']);
 Route::post('/register',[UserController::class, 'store']);
@@ -42,7 +45,11 @@ Route::get("/demandeAnnulation", [DemandeAnnulationController::class, 'index']);
 Route::delete("/demandeAnnulation/{id}", [DemandeAnnulationController::class, 'destroy'])->name("rejeterDemandeAnnulation");
 Route::put("/demandeAnnulation", [DemandeAnnulationController::class, 'update'])->name("accepterDemandeAnnulation");
 
+Route::get('/ResponsablePedagogiques', [ResponsablePedagogiqueController::class, 'index']);
+Route::post('/ResponsablePedagogiques', [ResponsablePedagogiqueController::class, 'store']);
 
+Route::get('/attaches', [AttacheController::class, 'index']);
+Route::post('/attaches', [AttacheController::class, 'store']);
 
 
 Route::post('login', [AuthController::class, 'login']);

@@ -11,6 +11,13 @@ class Professeur extends Model
     use HasFactory;
     use SoftDeletes;
 
+    protected $fillable = [
+        "nomComplet",
+        "grade",
+        "specialite",
+        "user_id",
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);

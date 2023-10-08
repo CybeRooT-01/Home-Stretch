@@ -40,33 +40,55 @@ class EtudiantController extends Controller
 
             DB::beginTransaction();
             try {
-                $etudiant = Etudiant::updateOrCreate(
-                    ['matricule' => $eleve['matricule']],
-                    [
-                        "nomComplet" => $eleve['nomComplet'],
-                        "email" => $eleve['email'],
-                        "matricule" => $eleve['matricule'],
-                    ]
-                );
-
-                $inscription = Inscription::create([
-                    "etudiant_id" => $etudiant->id,
-                    "annee_id" => $eleve['annee_id'],
-                    "classe_id" => $eleve['classe_id'],
-                ]);
-
-                User::updateOrCreate(
-                    ['login' => $eleve['email']],
-
-                    [
+//                $user = User::updateOrCreate(
+//                    ['login' => $eleve['email']],
+//                    [
+//                        "nom" => $eleve['nomComplet'],
+//                        "login" => $eleve['email'],
+//                        "password" => "password",
+//                        "role_id" => 3,
+//                        "email" => $eleve['email'],
+//                    ]
+//                );
+                $user = User::where('nom', $eleve['nomComplet'])->first();
+                if (!$user) {
+                    $user = User::create([
                         "nom" => $eleve['nomComplet'],
                         "login" => $eleve['email'],
                         "password" => "password",
                         "role_id" => 3,
                         "email" => $eleve['email'],
-                    ]
-                );
-
+                    ]);
+                }else{
+                    $user->update([
+                        "nom" => $eleve['nomComplet'],
+                        "login" => $eleve['email'],
+                        "password" => "password",
+                        "role_id" => 3,
+                        "email" => $eleve['email'],
+                    ]);
+                }
+                $etudiant = Etudiant::where('matricule', $eleve['matricule'])->first();
+                if (!$etudiant) {
+                    $etudiant = Etudiant::create([
+                        'user_id' => $user->id,
+                        "nomComplet" => $eleve['nomComplet'],
+                        "email" => $eleve['email'],
+                        "matricule" => $eleve['matricule'],
+                    ]);
+                }else{
+                    $etudiant->update([
+                        'user_id' => $user->id,
+                        "nomComplet" => $eleve['nomComplet'],
+                        "email" => $eleve['email'],
+                        "matricule" => $eleve['matricule'],
+                    ]);
+                }
+                $inscription = Inscription::create([
+                    "etudiant_id" => $etudiant->id,
+                    "annee_id" => $eleve['annee_id'],
+                    "classe_id" => $eleve['classe_id'],
+                ]);
                 $etudiants[] = $etudiant;
                 $inscriptions[] = $inscription;
 
