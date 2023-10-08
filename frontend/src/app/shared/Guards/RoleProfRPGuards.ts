@@ -16,7 +16,7 @@ import { tap, map } from 'rxjs/operators';
 export class RoleProfRPGuards implements CanActivate {
   constructor(private authService: AuthService, private router: Router) {}
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): any {
-    const allowedRoles = ['Professeu', 'RP'];
+    const allowedRoles = ['Professeu', 'RP', 'Attache'];
     return this.authService.getCurrentUser().pipe(
       tap((response: any) => {
         console.log(response);

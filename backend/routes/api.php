@@ -50,6 +50,7 @@ Route::post('/ResponsablePedagogiques', [ResponsablePedagogiqueController::class
 
 Route::get('/attaches', [AttacheController::class, 'index']);
 Route::post('/attaches', [AttacheController::class, 'store']);
+Route::put('/sessioncours/{id}', [SessionCoursController::class, 'update']);
 
 
 Route::post('login', [AuthController::class, 'login']);

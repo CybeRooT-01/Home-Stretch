@@ -40,16 +40,6 @@ class EtudiantController extends Controller
 
             DB::beginTransaction();
             try {
-//                $user = User::updateOrCreate(
-//                    ['login' => $eleve['email']],
-//                    [
-//                        "nom" => $eleve['nomComplet'],
-//                        "login" => $eleve['email'],
-//                        "password" => "password",
-//                        "role_id" => 3,
-//                        "email" => $eleve['email'],
-//                    ]
-//                );
                 $user = User::where('nom', $eleve['nomComplet'])->first();
                 if (!$user) {
                     $user = User::create([
@@ -111,70 +101,4 @@ class EtudiantController extends Controller
         ]);
     }
 
-//    public function inscription(Request $request)
-//    {
-//        $etudiants = [];
-//        $inscriptions = [];
-//        $inscriptionsErronees = [];
-//
-//        foreach ($request->json() as $eleve) {
-//            $classeId = $eleve['classe_id'];
-//            $classe = Classe::find($classeId);
-//            if (!$classe) {
-//                $inscriptionsErronees[] = [
-//                    "eleve" => $eleve,
-//                    "message" => "La classe n'a pas été trouvée"
-//                ];
-//                continue;
-//            }
-//
-//            if ($classe->etat == false) {
-//                $inscriptionsErronees[] = [
-//                    "eleve" => $eleve,
-//                    "message" => "La classe n'est pas encore ouverte"
-//                ];
-//                continue;
-//            }
-//
-//            DB::beginTransaction();
-//            try {
-//                $etudiant = Etudiant::create([
-//                    "nomComplet" => $eleve['nomComplet'],
-//                    "email" => $eleve['email'],
-//                    "matricule" => $eleve['matricule'],
-//
-//                ]);
-//                $inscription = Inscription::create([
-//                    "etudiant_id" => $etudiant->id,
-//                    "annee_id" => $eleve['annee_id'],
-//                    "classe_id" => $eleve['classe_id'],
-//                ]);
-//                User::create([
-//                    "nom" => $eleve['nomComplet'],
-//                    "login" => $eleve['email'],
-//                    "password" => "password",
-//                    "role_id" => 3,
-//                    "email" => $eleve['email'],
-//                ]);
-//                $etudiants[] = $etudiant;
-//                $inscriptions[] = $inscription;
-//
-//                DB::commit();
-//
-//            } catch (\Exception $e) {
-//                DB::rollBack();
-//                $inscriptionsErronees[] = [
-//                    "eleve" => $eleve,
-//                    "message" => "Erreur d'inscription : " . $e->getMessage(),
-//                ];
-//            }
-//        }
-//        return response()->json([
-//            "message" => "Inscriptions effectuées avec succès",
-//            "etudiants" => $etudiants,
-//            "inscriptions" => $inscriptions,
-//            "inscriptions_erronees" => $inscriptionsErronees,
-//            "status" => 201
-//        ]);
-//    }
 }

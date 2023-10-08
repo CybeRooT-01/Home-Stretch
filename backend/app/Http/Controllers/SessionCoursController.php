@@ -98,4 +98,18 @@ class SessionCoursController extends Controller
             'session' => new SessionCoursRessource($sessionplanifie),
         ]);
     }
+
+    public function update(string $id){
+    $sessionCours = SessionCours::find($id);
+    if (!$sessionCours){
+        return response()->json([
+            'message'=>"session cours non trouvé",
+        ],404);
+    }
+    $sessionCours->validee = true;
+    $sessionCours->save();
+    return response()->json([
+        'message'=>"session cours validée avec succès",
+    ]);
+    }
 }

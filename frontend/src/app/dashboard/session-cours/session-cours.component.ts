@@ -5,6 +5,7 @@ import {SessionCoursService} from 'src/app/services/session-cours.service';
 import {AuthService} from "../../services/auth.service";
 import {DemandeannulationService} from "../../services/demandeannulation.service";
 import {DemandeAnnulation} from "../../interfaces/DemandeAnnulation";
+import notification from 'sweetalert2';
 
 @Component({
   selector: 'app-session-cours',
@@ -12,8 +13,9 @@ import {DemandeAnnulation} from "../../interfaces/DemandeAnnulation";
   styleUrls: ['./session-cours.component.css'],
 })
 export class SessionCoursComponent implements OnInit {
-  isProf: any;
+  isProf: boolean = false;
   profId: any;
+  isAttache: boolean = false;
   data: any[] = [];
   dataByProf: any[] = [];
   evenementsFullCalendar: any[] = [];
@@ -28,6 +30,7 @@ export class SessionCoursComponent implements OnInit {
     this.authService.getCurrentUser().subscribe((response: any) => {
       console.log(response.data)
       this.isProf = response.data.role.includes('Professeur');
+      this.isAttache = response.data.role.includes('Attache');
       if (this.isProf) {
         let idProf = response.data.professeur.id;
         this.profId = idProf;
@@ -78,6 +81,7 @@ export class SessionCoursComponent implements OnInit {
               horaires: `${cours.heure_debut} - ${cours.heure_fin}`,
               filiere: cours.classe.filiere,
               dateCour: cours.date,
+              session_id: cours.id,
               title: title,
               start: dateDebut,
               end: dateFin,
@@ -126,6 +130,7 @@ export class SessionCoursComponent implements OnInit {
     this.horairesToDisplay = argToDisplay.horaires
     this.salleToDisplay = argToDisplay.salle;
     this.sessionsId = argToDisplay.session_id;
+    console.log(argToDisplay.session_id)
     if (this.profToDisplay !=="") {
       this.isCourSelected = true;
     }
@@ -151,6 +156,23 @@ export class SessionCoursComponent implements OnInit {
       this.demande = "";
       let modalclosebtn = document.getElementById("fermer");
       modalclosebtn?.click();
+    })
+  }
+
+  validerCours() {
+    const dataToUpdate: Partial<any> = {
+      id: this.sessionsId,
+    }
+    this.sessionCoursService.update(dataToUpdate).subscribe((response: any) => {
+      console.log(response)
+      this.ngOnInit();
+      let modalclosebtn = document.getElementById("close");
+      modalclosebtn?.click();
+      notification.fire({
+        title: 'Succès',
+        icon: 'success',
+        text: 'Cours validé avec succès',
+      });
     })
   }
 }
