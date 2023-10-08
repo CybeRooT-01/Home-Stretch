@@ -70,6 +70,25 @@ export abstract class RestService<T extends RestResponse<T>> {
       );
   }
 
+  updateWithoutID(data: Partial<T>): Observable<T> {
+    const httpOptions = {
+      headers: { 'Content-Type': 'application/json' },
+    };
+
+    return this.http
+      .put<T>(
+        Environnements.api.baseUrl + `/${this.uri()}`,
+        data,
+        httpOptions
+      )
+      .pipe(
+        tap((response: any): void => {
+          console.log(response);
+        }),
+        catchError(this.handleError)
+      );
+  }
+
   delete(id: number): Observable<T> {
     return this.http
       .delete<T>(Environnements.api.baseUrl + `/${this.uri()}/${id}`)

@@ -1,4 +1,3 @@
-
 <div class="relative overflow-x-auto">
   <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -27,12 +26,12 @@
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let demande of demandes" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+    <tr *ngFor="let demande of demandes; let i = index" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
       <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
         {{demande.sessionCours.salle.nom}}
       </th>
       <td class="px-6 py-4">
-        {{demande.sessionCours.heure_debut.substring(0,5)}} - {{demande.sessionCours.heure_fin.substring(0, 5)}}
+        {{demande.sessionCours.heure_debut.substring(0, 5)}} - {{demande.sessionCours.heure_fin.substring(0, 5)}}
       </td>
       <td class="px-6 py-4">
         {{demande.sessionCours.cours.module}}
@@ -43,14 +42,85 @@
       <td class="px-6 py-4">
         {{demande.professeur.nomComplet}}
       </td>
-      <td class="px-6 py-4">
-        <textarea readonly value="{{demande.motif}}" class="w-[200px] h-[50px] border border-gray-300 rounded-lg"></textarea>
+      <!-- ... Autres colonnes ... -->
+      <td class="px-6 py-4 cursor-pointer" data-bs-toggle="modal" [attr.data-bs-target]="'#exampleModal' + i">
+        {{ demande.motif.substring(0, 10) }}
       </td>
       <td class="px-6 py-4 flex justify-around">
-        <i class="fa-solid fa-check text-2xl cursor-pointer" style="color: #17e83a;" title="Valider"></i>
-        <i class="fa-solid fa-x text-2xl cursor-pointer" style="color: #e50b0b;" title="annuler"></i>
+        <i data-bs-toggle="modal" [attr.data-bs-target]="'#confirmacceptModalLabel' + i"
+           class="fa-solid fa-check text-2xl cursor-pointer" style="color: #17e83a;" title="Valider"></i>
+        <i data-bs-toggle="modal" [attr.data-bs-target]="'#confirmrejetModalLabel' + i" class="fa-solid fa-x text-2xl cursor-pointer" style="color: #e50b0b;" title="rejetter"></i>
       </td>
+
+      <!-- Modal du motif -->
+      <div class="modal fade" [id]="'exampleModal' + i" tabindex="-1" aria-labelledby="exampleModalLabel"
+           aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Motif de la demande</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style="max-width: 500px; white-space: pre-wrap; overflow-x: scroll">
+              {{demande.motif}}
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="bg-red-700 text-white w-[100px] h-[40px] rounded-2" data-bs-dismiss="modal">
+                Fermer
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- mdoal pour confirmer acceptation la demande-->
+      <div class="modal fade" [id]="'confirmacceptModalLabel' + i" tabindex="-1" aria-labelledby="exampleModalLabel"
+           aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="confirmacceptModalLabel">Voulez vous confirmer ?</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style="max-width: 500px; white-space: pre-wrap; overflow-x: clip">
+              Etes vous sur de vouloir accepter la demande de {{demande.professeur.nomComplet}} ?
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="bg-blue-700 text-white w-[100px] h-[40px] rounded-2" data-bs-dismiss="modal" (click)="accepter(demande.id,demande.sessionCours.id)">
+                valider
+              </button>
+              <button type="button" class="bg-red-700 text-white w-[100px] h-[40px] rounded-2" data-bs-dismiss="modal">
+                Fermer
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--      Modal pour confirmer la rejet-->
+      <div class="modal fade" [id]="'confirmrejetModalLabel' + i" tabindex="-1" aria-labelledby="exampleModalLabel"
+           aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="confirmrejetModalLabel">Voulez vous confirmer ?</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style="max-width: 500px; white-space: pre-wrap; overflow-x: clip">
+             Etes vous sur de vouloir rejetter la demande de {{demande.professeur.nomComplet}} ?
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="bg-blue-700 text-white w-[100px] h-[40px] rounded-2" data-bs-dismiss="modal" (click)="rejetter(demande.id)">
+                valider
+              </button>
+              <button type="button" class="bg-red-700 text-white w-[100px] h-[40px] rounded-2" data-bs-dismiss="modal">
+                Fermer
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </tr>
     </tbody>
   </table>
 </div>
+
+

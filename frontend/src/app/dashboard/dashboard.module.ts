@@ -19,6 +19,7 @@ import { CoursComponent } from './cours/cours.component';
 import {MatTableModule} from '@angular/material/table';
 import {RoleProfRPGuards} from "../shared/Guards/RoleProfRPGuards";
 import { DemandeANnulationComponent } from './demande-annulation/demande-annulation.component';
+import { MessageComponent } from './message/message.component';
 const authRoutes: Routes = [
   {
     path: '',
@@ -62,6 +63,7 @@ const authRoutes: Routes = [
     PlanificationComponent,
     CoursComponent,
     DemandeANnulationComponent,
+    MessageComponent,
   ],
   imports: [
     MatTableModule,

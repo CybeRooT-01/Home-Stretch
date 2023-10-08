@@ -8,7 +8,7 @@ import { ActivatedRouteSnapshot, RouterStateSnapshot} from '@angular/router';
   styleUrls: ['./dashboard.component.css'],
 })
 export class DashboardComponent implements OnInit {
-  showLink: any;
+  showLink: boolean = false;
   user: any;
   menuOuvert: boolean = false;
   constructor(private authService: AuthService, private roleRPGuard: RoleRPGuard) {}

@@ -39,6 +39,8 @@ Route::post('/register',[UserController::class, 'store']);
 
 Route::post("/demandeAnnulation", [DemandeAnnulationController::class, 'store']);
 Route::get("/demandeAnnulation", [DemandeAnnulationController::class, 'index']);
+Route::delete("/demandeAnnulation/{id}", [DemandeAnnulationController::class, 'destroy'])->name("rejeterDemandeAnnulation");
+Route::put("/demandeAnnulation", [DemandeAnnulationController::class, 'update'])->name("accepterDemandeAnnulation");
 
 
 
