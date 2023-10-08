@@ -10,13 +10,14 @@ use App\Models\Inscription;
 use App\Models\Salle;
 use App\Models\SessionCours;
 use Illuminate\Http\JsonResponse;
+use Carbon\Carbon;
 
 class SessionCoursController extends Controller
 {
-    public function index():JsonResponse
+    public function index(): JsonResponse
     {
-        $sessionCour = SessionCoursRessource::collection(SessionCours::all()->where('validee',false));
-        return response()->json($sessionCour,200);
+        $sessionCour = SessionCoursRessource::collection(SessionCours::all()->where('validee', false));
+        return response()->json($sessionCour, 200);
     }
 
     public function store(PlanificationCoursRequest $request)
@@ -63,24 +64,24 @@ class SessionCoursController extends Controller
         //verif si le quota horaire globale est atteint
         $quotaHoraireGlobale = (int)$cours->quota_horaire_globale;
         $quotaHoraireDejaPlanifie = 0;
-        $CoursPlanifies = SessionCours::all()->where('cours_id',$coursId);
-        foreach ($CoursPlanifies as $coursPlanifie){
+        $CoursPlanifies = SessionCours::all()->where('cours_id', $coursId);
+        foreach ($CoursPlanifies as $coursPlanifie) {
             $quotaHoraireDejaPlanifie += (int)$coursPlanifie->heure_fin - (int)$coursPlanifie->heure_debut;
         }
-        if ($quotaHoraireDejaPlanifie + ((int)$heureFin - (int)$heureDebut) > (int)$quotaHoraireGlobale){
+        if ($quotaHoraireDejaPlanifie + ((int)$heureFin - (int)$heureDebut) > (int)$quotaHoraireGlobale) {
             return response()->json([
-                'message'=>"Le quota horaire globale est atteint pour ce cours",
-            ],400);
+                'message' => "Le quota horaire globale est atteint pour ce cours",
+            ], 400);
         }
         //verifier si le professeur est disponible
         $professeur = $cours->professeur;
-        $coursPlanifies = SessionCours::all()->where('date',$date)->where('heure_debut',$heureDebut)->where('heure_fin',$heureFin);
-        foreach ($coursPlanifies as $coursPlanifie){
+        $coursPlanifies = SessionCours::all()->where('date', $date)->where('heure_debut', $heureDebut)->where('heure_fin', $heureFin);
+        foreach ($coursPlanifies as $coursPlanifie) {
             $coursPlanifie = new SessionCoursRessource($coursPlanifie);
-            if ($coursPlanifie->cours->professeur->id == $professeur->id){
+            if ($coursPlanifie->cours->professeur->id == $professeur->id) {
                 return response()->json([
-                    'message'=>"Le professeur n'est pas disponible",
-                ],400);
+                    'message' => "Le professeur n'est pas disponible",
+                ], 400);
             }
         }
 
@@ -94,22 +95,34 @@ class SessionCoursController extends Controller
             'validee' => false
         ]);
         return response()->json([
-            'message'=>"cours planifié avec succès",
+            'message' => "cours planifié avec succès",
             'session' => new SessionCoursRessource($sessionplanifie),
         ]);
     }
 
-    public function update(string $id){
-    $sessionCours = SessionCours::find($id);
-    if (!$sessionCours){
+    public function update(string $id)
+    {
+        $sessionCours = SessionCours::find($id);
+        if (!$sessionCours) {
+            return response()->json([
+                'message' => "session cours non trouvé",
+            ], 404);
+        }
+        $heureDebut = Carbon::parse($sessionCours->heure_debut);
+        $heureFin = Carbon::parse($sessionCours->heure_fin);
+        $duree = $heureDebut->diff($heureFin);
+        $dureeh = $duree->h;
+        $dureem = $duree->i;
+        $duree = $dureeh + $dureem / 60;
+        $cours = Cours::find($sessionCours->cours_id);
+        $quotaHoraireGlobale = (int)$cours->quota_horaire_globale;
+        $quotaHoraireGlobale = $quotaHoraireGlobale - $duree;
+        $cours->quota_horaire_globale = $quotaHoraireGlobale;
+        $cours->save();
+        $sessionCours->validee = true;
+        $sessionCours->save();
         return response()->json([
-            'message'=>"session cours non trouvé",
-        ],404);
-    }
-    $sessionCours->validee = true;
-    $sessionCours->save();
-    return response()->json([
-        'message'=>"session cours validée avec succès",
-    ]);
+            'message' => "session cours validée avec succès",
+        ]);
     }
 }
