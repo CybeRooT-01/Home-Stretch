@@ -1,13 +1,22 @@
+<div>
+  <p>Filtrer par date de cours</p>
+  <select [(ngModel)]="dateSelectionnee" (change)="filtrerParDate($event)">
+    <option value="">Toutes les dates</option>
+    <option *ngFor="let date of coursListe" [value]="date">{{ date }}</option>
+  </select>
+
+</div>
 <div class="flex">
   <div class="w-2/3 overflow-scroll">
     <full-calendar
       [options]="calendarOptions"
+      #calendar
     ></full-calendar>
   </div>
   <div class=" h-[620px] ml-[40px] w-full max-w-sm p-4 bg-blue-500 border border-gray-200 rounded-lg shadow sm:p-6">
     <h5 class="mb-3 text-base font-semibold text-gray-900 md:text-xl dark:text-white">
     </h5>
-    <p class="text-sm font-normal text-center text-white">Informations du Cours planifié</p>
+    <p class="text-sm font-normal text-center text-white">Informations de la session de Cours planifié</p>
     <ul class="my-4 space-y-3">
       <li>
         <a
@@ -136,6 +145,4 @@
     </div>
   </div>
 </div>
-
-
-
+</div>

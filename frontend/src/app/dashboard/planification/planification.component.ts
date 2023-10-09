@@ -36,6 +36,7 @@ export class PlanificationComponent implements OnInit {
   onSubmit() {
     if (this.formulaire.valid) {
       const formData = this.formulaire.value;
+      console.log(formData)
       let dateformatedwithbadformat = formData.date.toLocaleDateString();
       let dateformated = dateformatedwithbadformat.split('/').reverse().join('-');
       formData.date = dateformated;
@@ -48,6 +49,7 @@ export class PlanificationComponent implements OnInit {
         heure_debut: formData.heureDebut,
         heure_fin: formData.heureFin,
       }
+      console.log(data)
       this.sessioncoursservice.create(data).subscribe((data: any) => {
           console.log(data);
 

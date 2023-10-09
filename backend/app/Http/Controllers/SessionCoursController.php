@@ -24,12 +24,11 @@ class SessionCoursController extends Controller
     {
         $coursId = $request->input('cour_id');
         $salleId = $request->input('salle_id');
-        $classeId = $request->input('classe_id');
+        $classeIds = $request->input('classe_id');
         $date = $request->input('date');
         $heureDebut = $request->input('heure_debut');
         $heureFin = $request->input('heure_fin');
-        $inscriptions = Inscription::all()->where('classe_id', $classeId);
-
+        $inscriptions = Inscription::all()->whereIn('classe_id', $classeIds);
         //verifier si la salle peut contenir tous les étudiants de cette classe
         $salle = Salle::find($salleId);
         $cours = Cours::find($coursId);
@@ -49,7 +48,7 @@ class SessionCoursController extends Controller
         //si y'a une heure dans cette intervalle
         $coursChevauches = SessionCours::where('date', $date)
             ->where('salle_id', $salleId)
-            ->where('classe_id', $classeId)
+            ->whereIn('classe_id', $classeIds)
             ->where(function ($query) use ($heureDebut, $heureFin) {
                 $query->whereBetween('heure_debut', [$heureDebut, $heureFin])
                     ->orWhereBetween('heure_fin', [$heureDebut, $heureFin]);
@@ -85,18 +84,20 @@ class SessionCoursController extends Controller
             }
         }
 
-        $sessionplanifie = SessionCours::create([
-            'cours_id' => $coursId,
-            'classe_id' => $classeId,
-            'salle_id' => $salleId,
-            'date' => $date,
-            'heure_debut' => $heureDebut,
-            'heure_fin' => $heureFin,
-            'validee' => false
-        ]);
+        $plan = [];
+        foreach ($classeIds as $classeId) {
+            $plan[] = [
+                'date' => $date,
+                'heure_debut' => $heureDebut,
+                'heure_fin' => $heureFin,
+                'salle_id' => $salleId,
+                'cours_id' => $coursId,
+                'classe_id' => $classeId,
+            ];
+        }
+        SessionCours::insert($plan);
         return response()->json([
             'message' => "cours planifié avec succès",
-            'session' => new SessionCoursRessource($sessionplanifie),
         ]);
     }
 
@@ -123,6 +124,7 @@ class SessionCoursController extends Controller
         $sessionCours->save();
         return response()->json([
             'message' => "session cours validée avec succès",
+
         ]);
     }
 }

@@ -1,4 +1,4 @@
-import { Component, OnChanges, SimpleChanges} from '@angular/core';
+import { Component} from '@angular/core';
 import * as XLSX from 'xlsx';
 import {EtudiantService} from '../../services/etudiant.service';
 import Swal from 'sweetalert2';
@@ -9,17 +9,12 @@ import Swal from 'sweetalert2';
   styleUrls: ['./inscription.component.css'],
 })
 
-export class InscriptionComponent implements OnChanges {
+export class InscriptionComponent{
   excelData: any;
   fileSelected: boolean = false;
 
-  constructor(private etudiantservice: EtudiantService) {
-  }
+  constructor(private etudiantservice: EtudiantService) {}
 
-  ngOnChanges() {
-    // console.log("error "+ this.inscriptionErronee);
-
-  }
   readExcel(event: any) {
     let file = event.target.files[0];
     this.fileSelected = true;

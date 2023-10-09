@@ -27,14 +27,14 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
-    <mat-form-field>
-      <mat-label>Selectionnez une classe</mat-label>
-      <mat-select formControlName="classe">
-        <mat-option *ngFor="let classe of classes" [value]="classe.id">
-          {{ classe.libelle }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Selectionnez une classe</mat-label>
+          <mat-select formControlName="classe" multiple style="outline: none; border: none">
+            <mat-option *ngFor="let classe of classes" [value]="classe.id">{{ classe.libelle }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
     <mat-form-field>
       <mat-label>Selectionnez un cour</mat-label>
       <mat-select formControlName="cours">
