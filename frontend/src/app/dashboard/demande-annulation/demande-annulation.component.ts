@@ -41,7 +41,7 @@ export class DemandeANnulationComponent implements OnInit, OnDestroy{
       session_cours_id: session_cours_id
     }
     this.demandeAnnulationService.updateWithoutID(data).subscribe((data: any) => {
-      this.demandes = this.demandes.filter((demande) => demande.id !== id);
+      this.ngOnInit();
       notification.fire({
         title: 'Succès',
         icon: 'success',

@@ -109,22 +109,23 @@ class SessionCoursController extends Controller
                 'message' => "session cours non trouvé",
             ], 404);
         }
-        $heureDebut = Carbon::parse($sessionCours->heure_debut);
-        $heureFin = Carbon::parse($sessionCours->heure_fin);
-        $duree = $heureDebut->diff($heureFin);
-        $dureeh = $duree->h;
-        $dureem = $duree->i;
-        $duree = $dureeh + $dureem / 60;
-        $cours = Cours::find($sessionCours->cours_id);
-        $quotaHoraireGlobale = (int)$cours->quota_horaire_globale;
-        $quotaHoraireGlobale = $quotaHoraireGlobale - $duree;
-        $cours->quota_horaire_globale = $quotaHoraireGlobale;
-        $cours->save();
-        $sessionCours->validee = true;
-        $sessionCours->save();
+        $date = $sessionCours->date;
+        $salle = $sessionCours->salle;
+        $cour = $sessionCours->cours;
+        $SessionEnMemeTemps = SessionCours::where('date', $date)
+            ->where('salle_id', $salle->id)
+            ->where('cours_id', $cour->id)
+            ->where('heure_debut', $sessionCours->heure_debut)
+            ->where('heure_fin', $sessionCours->heure_fin)
+            ->where('date', $sessionCours->date)
+            ->where('validee', false)
+            ->get();
+        foreach ($SessionEnMemeTemps as $session) {
+            $session->validee = true;
+            $session->save();
+        }
         return response()->json([
             'message' => "session cours validée avec succès",
-
         ]);
     }
 }

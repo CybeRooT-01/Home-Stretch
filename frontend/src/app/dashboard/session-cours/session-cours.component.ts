@@ -44,6 +44,14 @@ export class SessionCoursComponent implements OnInit {
             console.log(data)
             this.dataByProf = data.filter((cours: any) => cours.cours.idProfesseur == idProf);
             console.log(this.dataByProf)
+
+            this.coursListe = this.dataByProf.map((cours: any) => {
+              return cours.date;
+            });
+            this.coursListe = this.coursListe.filter((item, index) => {
+              return this.coursListe.indexOf(item) === index;
+            });
+
             this.evenementsFullCalendar = this.dataByProf.map((cours: any) => {
               return this.fullcalendarMapper(cours);
             });
@@ -172,6 +180,8 @@ export class SessionCoursComponent implements OnInit {
     const dataToUpdate: Partial<any> = {
       id: this.sessionsId,
     }
+    console.log(dataToUpdate)
+    // return;
     this.sessionCoursService.update(dataToUpdate).subscribe((response: any) => {
       console.log(response)
       this.ngOnInit();
