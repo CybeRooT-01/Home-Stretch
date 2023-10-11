@@ -48,6 +48,13 @@
                 class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
               >Demandes d'annulations de cours</a
               >
+
+              <a
+                *ngIf="showLinkforAttache"
+                routerLink="/absences"
+                class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
+              >Valider les absences</a
+              >
             </div>
           </div>
         </div>
@@ -199,6 +206,12 @@
           routerLink="/cours"
           class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
         >Cours</a
+        >
+        <a
+          *ngIf="showLinkforAttache"
+          routerLink="/absences"
+          class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
+        >Valider les absences</a
         >
 
       </div>

@@ -7,6 +7,7 @@ import {DemandeannulationService} from "../../services/demandeannulation.service
 import {DemandeAnnulation} from "../../interfaces/DemandeAnnulation";
 import notification from 'sweetalert2';
 import {FullCalendarComponent} from "@fullcalendar/angular";
+import {AbsenceService} from "../../services/absence.service";
 
 @Component({
   selector: 'app-session-cours',
@@ -16,7 +17,9 @@ import {FullCalendarComponent} from "@fullcalendar/angular";
 export class SessionCoursComponent implements OnInit {
   isProf: boolean = false;
   profId: any;
+  isEtudiant: boolean = false;
   isAttache: boolean = false;
+  idEtudiant: number;
   data: any[] = [];
   dataByProf: any[] = [];
   evenementsFullCalendar: any[] = [];
@@ -24,7 +27,8 @@ export class SessionCoursComponent implements OnInit {
   constructor(
     private sessionCoursService: SessionCoursService,
     private authService: AuthService,
-    private demandeannulationService:DemandeannulationService) {
+    private demandeannulationService:DemandeannulationService,
+    private absenceService:AbsenceService) {
   }
 
 
@@ -36,6 +40,7 @@ export class SessionCoursComponent implements OnInit {
       console.log(response.data)
       this.isProf = response.data.role.includes('Professeur');
       this.isAttache = response.data.role.includes('Attache');
+      this.isEtudiant = response.data.role.includes('Etudiant');
       if (this.isProf) {
         let idProf = response.data.professeur.id;
         this.profId = idProf;
@@ -58,6 +63,26 @@ export class SessionCoursComponent implements OnInit {
             this.calendarOptions.events = this.evenementsFullCalendar;
           }
         )
+      }else if (this.isEtudiant){
+        this.idEtudiant = response.data.etudiant.id;
+        let classeEtudiant = response.data.classe.id
+        this.sessionCoursService.All().subscribe((data: any) => {
+          console.log(data)
+          this.data = data.filter((cours: any) => cours.classe.id == classeEtudiant);
+          console.log(this.data)
+
+          this.coursListe = this.data.map((cours: any) => {
+            return cours.date;
+          });
+          this.coursListe = this.coursListe.filter((item, index) => {
+            return this.coursListe.indexOf(item) === index;
+          });
+
+          this.evenementsFullCalendar = this.data.map((cours: any) => {
+            return this.fullcalendarMapper(cours);
+          });
+          this.calendarOptions.events = this.evenementsFullCalendar;
+        })
       } else {
         this.sessionCoursService.All().subscribe((data: any) => {
           this.data = data;
@@ -76,7 +101,7 @@ export class SessionCoursComponent implements OnInit {
       }
     });
   }
-  fullcalendarMapper(cours: any) {
+  fullcalendarMapper(cours: any){
     const dateDebut = new Date(`${cours.date}T${cours.heure_debut}`);
     const dateFin = new Date(`${cours.date}T${cours.heure_fin}`);
     const title = `${cours.cours.module} - ${cours.cours.nom_professeur} - ${cours.salle.nom}`;
@@ -191,6 +216,29 @@ export class SessionCoursComponent implements OnInit {
         title: 'Succès',
         icon: 'success',
         text: 'Cours validé avec succès',
+      });
+    })
+  }
+  marquerPresent() {
+    let data: any = {
+      sessionCours_id: this.sessionsId,
+      etudiant_id: this.idEtudiant,
+      date: this.dateToDisplay
+    }
+    this.absenceService.create(data).subscribe((response: any) => {
+      console.log(response)
+      this.ngOnInit();
+      notification.fire({
+        title: 'Succès',
+        icon: 'success',
+        text: response.message,
+      });
+    }, (error: any) => {
+      console.log(error)
+      notification.fire({
+        title: 'Erreur',
+        icon: 'error',
+        text: error.message,
       });
     })
   }

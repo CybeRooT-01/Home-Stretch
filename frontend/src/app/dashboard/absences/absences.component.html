@@ -1,0 +1,61 @@
+
+<div class="relative overflow-x-auto">
+  <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+    <tr>
+      <th scope="col" class="px-6 py-3">
+        nom
+      </th>
+      <th scope="col" class="px-6 py-3">
+        classe
+      </th>
+      <th scope="col" class="px-6 py-3">
+        cours
+      </th>
+      <th scope="col" class="px-6 py-3">
+        Actions
+      </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let absence of absences; let i = index " class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+      <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+        {{absence.etudiant.nom}}
+      </th>
+      <td class="px-6 py-4">
+        {{absence.sessioncours.classe.libelle}}
+      </td>
+      <td class="px-6 py-4">
+        {{absence.sessioncours.cours.module}}
+      </td>
+      <td class="px-6 py-4">
+        <i data-bs-toggle="modal" [attr.data-bs-target]="'#confirmacceptModalLabel' + i"
+           class="fa-solid fa-check text-2xl cursor-pointer" style="color: #17e83a;" title="Valider"></i>
+      </td>
+      <div class="modal fade" [id]="'confirmacceptModalLabel' + i" tabindex="-1" aria-labelledby="exampleModalLabel"
+           aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="confirmacceptModalLabel">Voulez vous confirmer ?</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style="max-width: 500px; white-space: pre-wrap; overflow-x: clip">
+              Etes vous sur de vouloir confirmer la presence de {{absence.etudiant.nom}} ?
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="bg-blue-700 text-white w-[100px] h-[40px] rounded-2" data-bs-dismiss="modal" (click)="ValiderPresence(absence.id)">
+                valider
+              </button>
+              <button type="button" class="bg-red-700 text-white w-[100px] h-[40px] rounded-2" data-bs-dismiss="modal">
+                Fermer
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </tr>
+    </tbody>
+  </table>
+</div>

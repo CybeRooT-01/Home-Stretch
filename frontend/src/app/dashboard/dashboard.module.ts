@@ -4,7 +4,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { Routes, RouterModule } from '@angular/router';
 import { AuthGuard } from '../shared/Guards/AuthGuards';
 import { InscriptionComponent } from './inscription/inscription.component';
-import { RoleRPGuard } from '../shared/Guards/roleRPGuard';
+import { RoleRPGuard } from '../shared/Guards/RoleRPGuard';
 import { SessionCoursComponent } from './session-cours/session-cours.component';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { PlanificationComponent } from './planification/planification.component';
@@ -17,9 +17,11 @@ import { MatSelectModule } from '@angular/material/select';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { CoursComponent } from './cours/cours.component';
 import {MatTableModule} from '@angular/material/table';
-import {RoleProfRPGuards} from "../shared/Guards/RoleProfRPGuards";
+import {RoleProfRPEtudiantGuards} from "../shared/Guards/RoleProfRPEtudiantGuards";
 import { DemandeANnulationComponent } from './demande-annulation/demande-annulation.component';
 import { MessageComponent } from './message/message.component';
+import { AbsencesComponent } from './absences/absences.component';
+import {RoleAttacheGuards} from "../shared/Guards/RoleAttacheGuards";
 const authRoutes: Routes = [
   {
     path: '',
@@ -34,7 +36,7 @@ const authRoutes: Routes = [
       {
         path: 'sessioncours',
         component: SessionCoursComponent,
-        canActivate: [RoleProfRPGuards]
+        canActivate: [RoleProfRPEtudiantGuards]
       },
       {
         path: 'planification',
@@ -50,6 +52,11 @@ const authRoutes: Routes = [
         path: 'cours',
         component: CoursComponent,
         canActivate: [RoleRPGuard],
+      },
+      {
+        path: 'absences',
+        component: AbsencesComponent,
+        canActivate: [RoleAttacheGuards],
       }
     ],
   },
@@ -64,6 +71,7 @@ const authRoutes: Routes = [
     CoursComponent,
     DemandeANnulationComponent,
     MessageComponent,
+    AbsencesComponent,
   ],
   imports: [
     MatTableModule,

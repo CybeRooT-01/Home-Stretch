@@ -10,5 +10,7 @@ class Module extends Model
 {
     use HasFactory;
     use SoftDeletes;
+
+    protected $fillable = ['libelle'];
     protected  $hidden = ['created_at','updated_at','deleted_at'];
 }

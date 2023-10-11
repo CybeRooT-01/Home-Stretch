@@ -84,6 +84,12 @@
               data-bs-toggle="modal" data-bs-target="#validationmodal">
         Valider le cour
       </button>
+      <button [ngClass]="{ 'disabled-button': !isCourSelected }"
+              (click)="marquerPresent()"
+              [disabled]="!isCourSelected" *ngIf="isEtudiant" type="button"
+              class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-1 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-white dark:hover:bg-blue-400 hover:text-white focus:outline-none dark:focus:ring-blue-800">
+        Marquer Present
+      </button>
     </ul>
 
   </div>
@@ -126,14 +132,14 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="validationcourmodal">Demande d'annulation de cours</h1>
+        <h1 class="modal-title fs-5" id="validationcourmodal">Validation de cours</h1>
 
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <p *ngIf="isInsulte" class="bg-yellow-500 text-white text-center">VEILLEZ EVITER LES INSULTES VOTRE TEXT SERA
-        ENVOYER AU SUPERIEUR</p>
       <div class="modal-body">
         Voulez vous vraiment valider ce cours ?
+
+        <h3 class="text-red-600"> Assurez vous de deja valider les absences des eleves</h3>
       <div class="modal-footer">
         <button type="button" id="close" class="bg-red-700 text-white w-[100px] h-[40px] rounded-2"
                 data-bs-dismiss="modal">Annuler

@@ -13,4 +13,15 @@ class SalleController extends Controller
         $salles = Salle::all();
         return response()->json($salles,200);
     }
+
+    public function store(Request $request){
+        Salle::create([
+            'nom' => $request->nom,
+            'numero' => $request->numero,
+            'capacite' => $request->capacite,
+        ]);
+        return response()->json([
+            'message' => 'Salle ajoutée avec success'
+        ], 201);
+    }
 }

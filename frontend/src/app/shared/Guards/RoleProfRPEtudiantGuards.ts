@@ -13,10 +13,10 @@ import { tap, map } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root',
 })
-export class RoleProfRPGuards implements CanActivate {
+export class RoleProfRPEtudiantGuards implements CanActivate {
   constructor(private authService: AuthService, private router: Router) {}
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): any {
-    const allowedRoles = ['Professeu', 'RP', 'Attache'];
+    const allowedRoles = ['Professeur', 'RP', 'Attache','Etudiant'];
     return this.authService.getCurrentUser().pipe(
       tap((response: any) => {
         console.log(response);

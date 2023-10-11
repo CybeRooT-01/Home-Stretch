@@ -11,9 +11,20 @@ class Classe extends Model
     use HasFactory;
     use SoftDeletes;
 
+    protected $fillable = [
+        'libelle',
+        'annee_id',
+        'filiere',
+        'niveau',
+    ];
     protected $hidden = [
         'created_at',
         'updated_at',
         'deleted_at',
     ];
+
+    public function inscriptions()
+    {
+        return $this->hasMany(Inscription::class);
+    }
 }

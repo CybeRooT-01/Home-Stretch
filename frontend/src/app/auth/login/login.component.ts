@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
-
+import notification from 'sweetalert2';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -17,6 +17,14 @@ export class LoginComponent {
       .login(this.login, this.password)
       .subscribe((response: any) => {
         console.log(response);
-      });
+      },
+      (error: any) => {
+        notification.fire({
+          title: 'Erreur',
+          icon: 'error',
+          text: 'Login ou mot de passe incorrect',
+        });
+      }
+      );
   }
 }

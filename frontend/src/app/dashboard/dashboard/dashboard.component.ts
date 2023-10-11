@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
-import { RoleRPGuard } from '../../shared/Guards/roleRPGuard';
+import { RoleRPGuard } from '../../shared/Guards/RoleRPGuard';
 import { ActivatedRouteSnapshot, RouterStateSnapshot} from '@angular/router';
+import {RoleAttacheGuards} from "../../shared/Guards/RoleAttacheGuards";
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -9,9 +10,10 @@ import { ActivatedRouteSnapshot, RouterStateSnapshot} from '@angular/router';
 })
 export class DashboardComponent implements OnInit {
   showLink: boolean = false;
+  showLinkforAttache: boolean = false;
   user: any;
   menuOuvert: boolean = false;
-  constructor(private authService: AuthService, private roleRPGuard: RoleRPGuard) {}
+  constructor(private authService: AuthService, private roleRPGuard: RoleRPGuard, private roleAttacheGuards:RoleAttacheGuards) {}
   emptyRouteSnapshot: ActivatedRouteSnapshot = {} as ActivatedRouteSnapshot;
   emptyRouterStateSnapshot: RouterStateSnapshot = {} as RouterStateSnapshot;
   ngOnInit() {
@@ -21,9 +23,9 @@ export class DashboardComponent implements OnInit {
         // console.log(response);
         this.showLink = response;
       });
-    this.authService.getCurrentUser().subscribe((response: any) => {
-      this.user = response.data;
-      console.log(this.user);
+    this.showLinkforAttache = this.roleAttacheGuards.canActivate(this.emptyRouteSnapshot, this.emptyRouterStateSnapshot).subscribe((response: any) => {
+      this.showLinkforAttache = response;
+      console.log(this.showLinkforAttache)
     });
   }
   deconnecter() {

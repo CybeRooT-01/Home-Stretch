@@ -3,7 +3,7 @@ import {SallesService} from '../../services/salles.service';
 import {Salles} from 'src/app/interfaces/Salles';
 import {CoursService} from "../../services/cours.service";
 import {Cours} from "../../interfaces/Cours";
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {BirahimValidator} from "../../validators/birahim.validator";
 import {Classes} from "../../interfaces/Classes";
 import {ClasseService} from "../../services/classe.service";
@@ -26,12 +26,13 @@ export class PlanificationComponent implements OnInit {
     this.formulaire = this.fb.group({
       salle: ['', Validators.required],
       cours: ['', Validators.required],
-      date: ['', Validators.required],
+      date: ['', [Validators.required,BirahimValidator.dateValide]],
       heureDebut: ['', Validators.required],
       heureFin: ['', Validators.required],
       classe: ['', Validators.required],
     }, {validators: BirahimValidator.heureDebutSuperieurAHeureFin});
   }
+
 
   onSubmit() {
     if (this.formulaire.valid) {

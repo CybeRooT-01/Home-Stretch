@@ -53,6 +53,7 @@
         <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
       </mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
+      <mat-error *ngIf="formulaire.get('date')?.hasError('dateInvalide')">La date doit être supérieure à la date actuelle.</mat-error>
     </mat-form-field>
   </div>
 

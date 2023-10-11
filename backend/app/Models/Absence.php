@@ -10,4 +10,10 @@ class Absence extends Model
 {
     use HasFactory;
     use SoftDeletes;
+
+    protected $fillable = [
+        'session_id',
+        'etudiant_id',
+        'date',
+    ];
 }

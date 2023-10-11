@@ -16,4 +16,13 @@ class Inscription extends Model
         "annee_id",
         "classe_id",
     ];
+
+    public function classe()
+    {
+        return $this->belongsTo(Classe::class);
+    }
+    public function etudiant()
+    {
+        return $this->belongsTo(Etudiant::class);
+    }
 }

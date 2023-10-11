@@ -4,13 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PlanificationCoursRequest;
 use App\Http\Resources\CoursRessources;
+use App\Http\Resources\InscriptionRessource;
 use App\Http\Resources\SessionCoursRessource;
+use App\Mail\AcceptationAnnulationCour;
+use App\Mail\AvertissementFuyardMail;
+use App\Mail\ConvoquationFuyardMail;
+use App\Models\Absence;
 use App\Models\Cours;
+use App\Models\Etudiant;
 use App\Models\Inscription;
 use App\Models\Salle;
 use App\Models\SessionCours;
 use Illuminate\Http\JsonResponse;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
 
 class SessionCoursController extends Controller
 {
@@ -104,14 +111,57 @@ class SessionCoursController extends Controller
     public function update(string $id)
     {
         $sessionCours = SessionCours::find($id);
+
         if (!$sessionCours) {
             return response()->json([
                 'message' => "session cours non trouvé",
             ], 404);
         }
+        if ($sessionCours->validee) {
+            return response()->json([
+                'message' => "session cours deja validée",
+            ], 400);
+        }
+
+        //reduire le quota horaire globale
+        $heureDebut = Carbon::parse($sessionCours->heure_debut);
+        $heureFin = Carbon::parse($sessionCours->heure_fin);
+        $duree = $heureDebut->diff($heureFin);
+        $dureeh = $duree->h;
+        $dureem = $duree->i;
+        $duree = $dureeh + $dureem / 60; //la duree du cours en heure
         $date = $sessionCours->date;
         $salle = $sessionCours->salle;
         $cour = $sessionCours->cours;
+        $cours = Cours::find($sessionCours->cours_id);
+        $quotaHoraireGlobale = (int)$cours->quota_horaire_globale;
+        $quotaHoraireGlobale = $quotaHoraireGlobale - $duree;
+        $cours->quota_horaire_globale = $quotaHoraireGlobale;
+        $cours->save();
+        //ici on gere les absences
+        $classe = $sessionCours->classe;
+        $inscrits = Inscription::all()->where('classe_id', $classe->id);
+        $etudiantDeLaClasseNonEmarge = [];
+        //on verifie si les etudiants de cette classe ont marqués leurs présences
+        foreach ($inscrits as $inscrit) {
+            $etudiantDeLaClasse = $inscrit->etudiant;
+            //si l'etudiant n'a pas marqué sa presence
+            $absence = Absence::where('session_id', $id)->where('etudiant_id', $etudiantDeLaClasse->id)->where('date', $date)->first();
+            if ($absence == null) {
+                $etudiantDeLaClasseNonEmarge[] = $etudiantDeLaClasse;
+            }
+        }
+        //inserer les absences
+        foreach ($etudiantDeLaClasseNonEmarge as $etudiant) {
+            $fantome = Absence::create([
+                'session_id' => $id,
+                'etudiant_id' => $etudiant->id,
+                'date' => $date,
+            ]);
+            $fantome->total_heurs_absance += $duree;
+            $fantome->save();
+        }
+
         $SessionEnMemeTemps = SessionCours::where('date', $date)
             ->where('salle_id', $salle->id)
             ->where('cours_id', $cour->id)
@@ -121,8 +171,56 @@ class SessionCoursController extends Controller
             ->where('validee', false)
             ->get();
         foreach ($SessionEnMemeTemps as $session) {
+            $classeEnMemeTemps = $session->classe;
+            $inscritsEnMMtemps = Inscription::all()->where('classe_id', $classeEnMemeTemps->id);
+            $etudiantDeLaClasseNonEmargeEnMemeTemps = [];
+            foreach ($inscritsEnMMtemps as $inscrit) {
+                $etudiantDeLaClasseEnMemeTemps = $inscrit->etudiant;
+                $absenceEnMemeTemps = Absence::where('session_id', $session->id)->where('etudiant_id', $etudiantDeLaClasseEnMemeTemps->id)->where('date', $date)->first();
+                if ($absenceEnMemeTemps == null) {
+                    $etudiantDeLaClasseNonEmargeEnMemeTemps[] = $etudiantDeLaClasseEnMemeTemps;
+                }
+            }
+            //inserer les absences
+            foreach ($etudiantDeLaClasseNonEmargeEnMemeTemps as $etudiant) {
+                $fantomeEnMmTemps = Absence::create([
+                    'session_id' => $session->id,
+                    'etudiant_id' => $etudiant->id,
+                    'date' => $date,
+                ]);
+                $fantomeEnMmTemps->total_heurs_absance += $duree;
+                $fantomeEnMmTemps->save();
+                $idFantome = $fantomeEnMmTemps->etudiant_id;
+                $etudiantFantomeEnmmTmps = Etudiant::where('id', $idFantome)->first();
+                $emailetudiantFantomeEnmmTmps = $etudiantFantomeEnmmTmps->email;
+                if ($fantomeEnMmTemps->total_heurs_absance >= 30) {
+                    $mail = new ConvoquationFuyardMail();
+                    $mail->to($emailetudiantFantomeEnmmTmps);
+                    Mail::send($mail);
+                } elseif ($fantomeEnMmTemps->total_heurs_absance >= 10) {
+                    $mail = new AvertissementFuyardMail();
+                    $mail->to($emailetudiantFantomeEnmmTmps);
+                    Mail::send($mail);
+                }
+            }
             $session->validee = true;
             $session->save();
+        }
+        $eleveAbsent = Absence::where('session_id', $id)->where('presence', false)->get();
+        foreach ($eleveAbsent as $fuyard) {
+            $id_etudiantFuyard = $fuyard->etudiant_id;
+            $etudiantFuyard = Etudiant::where('id', $id_etudiantFuyard)->first();
+            $emailDuFuyaard = $etudiantFuyard->email;
+            $fuyard->total_heurs_absance += $duree;
+            if ($fuyard->total_heurs_absance >= 30) {
+                $mail = new ConvoquationFuyardMail();
+                $mail->to($emailDuFuyaard);
+                Mail::send($mail);
+            } elseif ($fuyard->total_heurs_absance >= 10) {
+                $mail = new AvertissementFuyardMail();
+                $mail->to($emailDuFuyaard);
+                Mail::send($mail);
+            }
         }
         return response()->json([
             'message' => "session cours validée avec succès",

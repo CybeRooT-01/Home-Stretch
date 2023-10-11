@@ -12,4 +12,13 @@ class ModuleController extends Controller
     {
         return response()->json(Module::all(),200);
     }
+
+    public function store(Request $request){
+        Module::create([
+            'libelle' => $request->libelle,
+        ]);
+        return response()->json([
+            'message' => 'Module ajouté avec success'
+        ], 201);
+    }
 }
