@@ -20,7 +20,6 @@ export class TokenInterceptor implements HttpInterceptor {
         },
       });
       // console.log(authRequest);
-
       return next.handle(authRequest);
     }
     return next.handle(request);
