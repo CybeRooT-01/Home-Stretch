@@ -1,11 +1,7 @@
-// // ignore_for_file: use_build_context_synchronously
 // ignore_for_file: use_build_context_synchronously
-
 import 'package:flutter/material.dart';
 import 'package:mobile/services/auth_service.dart';
-import 'package:mobile/services/global.dart';
 import 'package:mobile/utils/global.colors.dart';
-import 'package:mobile/views/dashboard.view.dart';
 import 'package:mobile/widgets/text.form.global.dart';
 
 class Login extends StatefulWidget {
@@ -19,27 +15,9 @@ class _LoginState extends State<Login> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   loginPressed(BuildContext context) {
-    _authenticateUser(context);
-  }
-
-  Future<void> _authenticateUser(BuildContext context) async {
     final String login = emailController.text;
     final String password = passwordController.text;
-    if (login.isNotEmpty && password.isNotEmpty) {
-      final response = await AuthService.login(login, password);
-      if (response.statusCode == 200) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const Dashboard(),
-          ),
-        );
-      } else {
-        errorSnackBar(context, 'Échec de la connexion');
-      }
-    } else {
-      errorSnackBar(context, 'Veuillez remplir tous les champs');
-    }
+    AuthService.authenticateUser(context, login, password);
   }
 
   @override

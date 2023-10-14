@@ -29,9 +29,10 @@ class TextFormGlobal extends StatelessWidget {
         keyboardType: TextInputType.emailAddress,
         obscureText: obscure,
         decoration: InputDecoration(
-            hintText: text,
-            border: InputBorder.none,
-            contentPadding: const EdgeInsets.all(0)),
+          hintText: text,
+          border: InputBorder.none,
+          contentPadding: const EdgeInsets.all(0),
+        ),
       ),
     );
   }
