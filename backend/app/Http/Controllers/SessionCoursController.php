@@ -84,15 +84,16 @@ class SessionCoursController extends Controller
         $CoursPlanifies = SessionCours::where('cours_id', $coursId)
             ->whereIn('classe_id', $classeIds)
             ->get();
-
         foreach ($CoursPlanifies as $coursPlanifie) {
             $quotaHoraireDejaPlanifie += (int)$coursPlanifie->heure_fin - (int)$coursPlanifie->heure_debut;
         }
-        if ($quotaHoraireDejaPlanifie + ((int)$heureFin - (int)$heureDebut) > (int)$quotaHoraireGlobale) {
+
+        if ($quotaHoraireDejaPlanifie + ((int)$heureFin - (int)$heureDebut) > $quotaHoraireGlobale) {
             return response()->json([
                 'message' => "Le quota horaire globale est atteint pour ce cours",
             ], 400);
         }
+
 
         // Vérification de la disponibilité du professeur (commune)
         $professeur = $cours->professeur;
