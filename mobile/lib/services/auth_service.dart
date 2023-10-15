@@ -13,11 +13,7 @@ import 'package:mobile/views/login.view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {
-  final Dio _dio = Dio();
 
-  intercept() {
-    _dio.interceptors.add(AuthInterceptor());
-  }
 
   static Future<http.Response> login(String login, String password) async {
     Map data = {"login": login, "password": password};
@@ -47,7 +43,7 @@ class AuthService {
           ),
         );
       } else {
-        errorSnackBar(context, 'Échec de la connexion');
+        errorSnackBar(context, 'Login ou mot de passe incorrect');
       }
     } else {
       errorSnackBar(context, 'Veuillez remplir tous les champs');

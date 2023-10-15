@@ -18,7 +18,10 @@ class _DashboardState extends State<Dashboard> {
   late Future<User> userFuture;
   int currentPage = 0;
 
-  List<Widget> pages = const [HomePage(), ProfilPage()];
+  List<Widget> pages = const [
+    HomePage(),
+    ProfilPage(),
+  ];
 
   @override
   void initState() {
@@ -40,7 +43,12 @@ class _DashboardState extends State<Dashboard> {
           future: userFuture,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              return Text(snapshot.data!.nom);
+              return Row(
+                children: [
+                  Text(snapshot.data!.nom),
+                  Text(snapshot.data!.classe.id.toString()), //id de la classe
+                ],
+              );
             } else if (snapshot.hasError) {
               return const Text('Échec de la récupération de l\'utilisateur');
             } else {
