@@ -6,7 +6,6 @@ import 'package:mobile/widgets/text.form.global.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
-
   @override
   State<Login> createState() => _LoginState();
 }

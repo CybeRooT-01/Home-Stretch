@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:mobile/models/User.dart';
 import 'package:mobile/services/global.dart';
 import 'package:mobile/shared/auth_interceptor.dart';
 import 'package:mobile/views/dashboard.view.dart';
@@ -69,6 +70,18 @@ class AuthService {
       );
     } else {
       errorSnackBar(context, 'Échec de la déconnexion');
+    }
+  }
+
+  static Future<User> fetchCurrentUser() async {
+    var url = Uri.parse('$baseUrl/user');
+    final dio = Dio();
+    dio.interceptors.add(AuthInterceptor());
+    final response = await dio.get(url.toString());
+    if (response.statusCode == 200) {
+      return User.fromJson(response.data);
+    } else {
+      throw Exception('Échec de la récupération de l\'utilisateur');
     }
   }
 }

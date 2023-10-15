@@ -16,20 +16,52 @@ class UserRessource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $data = [
-            'id' => $this->id,
-            'nom' => $this->nom,
-            'login' => $this->login,
-            'email' => $this->email,
-            'role' => $this->role->libelle,
-            'professeur' => $this->professeur,
-            'etudiant' => $this->etudiant,
-            'classe' => $this->when($this->etudiant, function () {
-                $classeId = Inscription::where('etudiant_id', $this->etudiant->id)->first()->classe_id;
-                return Classe::where('id', $classeId)->first();
-            }),
-        ];
-
+        $data = [];
+        if ($this->professeur) {
+            $data = [
+                'id' => $this->id,
+                'nom' => $this->nom,
+                'login' => $this->login,
+                'email' => $this->email,
+                'role' => $this->role->libelle,
+                'professeur' => $this->professeur,
+            ];
+        } else if ($this->etudiant) {
+            $data = [
+                'id' => $this->id,
+                'nom' => $this->nom,
+                'login' => $this->login,
+                'email' => $this->email,
+                'role' => $this->role->libelle,
+                'etudiant' => $this->etudiant,
+                'classe' => $this->when($this->etudiant, function () {
+                    $classeId = Inscription::where('etudiant_id', $this->etudiant->id)->first()->classe_id;
+                    return Classe::where('id', $classeId)->first();
+                }),
+            ];
+        } else {
+            $data = [
+                'id' => $this->id,
+                'nom' => $this->nom,
+                'login' => $this->login,
+                'email' => $this->email,
+                'role' => $this->role->libelle,
+            ];
+        }
         return $data;
     }
 }
+
+// $data = [
+//     'id' => $this->id,
+//     'nom' => $this->nom,
+//     'login' => $this->login,
+//     'email' => $this->email,
+//     'role' => $this->role->libelle,
+//     'professeur' => $this->professeur,
+//     'etudiant' => $this->etudiant,
+//     'classe' => $this->when($this->etudiant, function () {
+//         $classeId = Inscription::where('etudiant_id', $this->etudiant->id)->first()->classe_id;
+//         return Classe::where('id', $classeId)->first();
+//     }),
+// ];
