@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -17,6 +19,8 @@ class _HomePageState extends State<HomePage> {
   late Future<List<SessionCour>> sessionCourFuture;
   int classeId = 0;
   int etudiantId = 0;
+  late Timer _timer;
+  bool _showIconButton = true;
 
   @override
   void initState() {
@@ -28,7 +32,7 @@ class _HomePageState extends State<HomePage> {
     int sessId = session.id;
     var date = session.date;
     date = date.replaceAll('-', '/');
-    print(date);
+    // print(date);
     var etudiantId = await ClasseIdEtudiantIdProvider.of(context)
         .classeIdEtudiantId
         .etudiantId;
@@ -59,6 +63,18 @@ class _HomePageState extends State<HomePage> {
             itemCount: filteredSessions.length,
             itemBuilder: (context, index) {
               final session = filteredSessions[index];
+              final now = DateTime.now();
+              final heureDebut =
+                  DateTime.parse('${session.date} ${session.heureDebut!}');
+              final difference = heureDebut.difference(now);
+              final minutesDepassees = difference.abs().inMinutes;
+              // print(minutesDepassees);
+              if (minutesDepassees >= 30) {
+                _showIconButton = false;
+              } else {
+                _showIconButton = true;
+              }
+              print(_showIconButton);
               return Card(
                 elevation: 5,
                 margin: const EdgeInsets.all(16),
@@ -72,13 +88,21 @@ class _HomePageState extends State<HomePage> {
                           Text('Date: ${session.date}'),
                           // Text('Classe: $classeId'),
                           // Text('etudiant: $etudiantId'),
-                          IconButton(
-                            icon: const Icon(Icons.fingerprint),
-                            color: GlobalColors.mainColor,
-                            iconSize: 40,
-                            onPressed: () => marquerPresence(context, session),
-                            tooltip: 'Marquer la présence',
-                          ),
+                          _showIconButton
+                              ? IconButton(
+                                  icon: const Icon(Icons.fingerprint),
+                                  color: GlobalColors.mainColor,
+                                  iconSize: 40,
+                                  onPressed: () =>
+                                      marquerPresence(context, session),
+                                  tooltip: 'Marquer la présence',
+                                )
+                              : const Text(
+                                  'Le bouton est désactivé',
+                                  style: TextStyle(
+                                      color: Colors.red,
+                                      fontWeight: FontWeight.bold),
+                                ),
                         ],
                       ),
                       const SizedBox(height: 10),
