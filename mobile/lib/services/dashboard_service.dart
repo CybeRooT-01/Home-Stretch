@@ -4,7 +4,7 @@ import 'package:mobile/services/global.dart';
 import 'package:mobile/shared/auth_interceptor.dart';
 
 class DashboardService {
-static Future<List<SessionCour>> getSessionsCours() async {
+  static Future<List<SessionCour>> getSessionsCours() async {
     var url = Uri.parse('$baseUrl/sessioncours');
     final dio = Dio();
     dio.interceptors.add(AuthInterceptor());
@@ -18,6 +18,30 @@ static Future<List<SessionCour>> getSessionsCours() async {
       return sessions;
     } else {
       throw Exception('Échec de la récupération des sessions de cours');
+    }
+  }
+
+  static Future marquerPresence(
+      context, int etudiantId, int sessionId, date) async {
+    var url = Uri.parse('$baseUrl/absence');
+    final dio = Dio();
+    dio.interceptors.add(AuthInterceptor());
+    var data = {
+      "etudiant_id": etudiantId,
+      "sessionCours_id": sessionId,
+      "date": date
+    };
+
+    final response = await dio.post(url.toString(), data: {
+      "etudiant_id": etudiantId,
+      "sessionCours_id": sessionId,
+      "date": date
+    });
+    if (response.statusCode == 201) {
+      succsessSnackBar(context, 'Présence marquée avec succès');
+      return response.data;
+    } else {
+      errorSnackBar(context, response.data['message']);
     }
   }
 }

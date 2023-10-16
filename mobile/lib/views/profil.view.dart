@@ -33,6 +33,15 @@ class _ProfilPageState extends State<ProfilPage> {
               return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
+                  Text(
+                    "Bienvenue sur votre profil",
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: GlobalColors.mainColor,
+                    ),
+                  ),
+                  const SizedBox(height: 40),
                   const CircleAvatar(
                     radius: 80,
                     backgroundColor: Colors.grey,

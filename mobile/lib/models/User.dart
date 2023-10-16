@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 class User {
   final int id;
   final String nom;
@@ -57,12 +59,12 @@ class Etudiant {
 }
 
 class Classe {
-  final int id;
-  final int annee_id;
-  final String libelle;
-  final String filiere;
-  final String niveau;
-  final int etat;
+  int? id;
+  int? annee_id;
+  String libelle;
+  String filiere;
+  String niveau;
+  int etat;
 
   Classe({
     required this.id,

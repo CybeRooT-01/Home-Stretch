@@ -1,8 +1,10 @@
 import 'dart:convert';
-
+import 'package:mobile/models/class_id_etudiant_id.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/models/User.dart';
 import 'package:mobile/services/auth_service.dart';
+import 'package:mobile/shared/class_id__etudiant_id_provider.dart';
 import 'package:mobile/utils/global.colors.dart';
 import 'package:mobile/views/home_page.view.dart';
 import 'package:mobile/views/profil.view.dart';
@@ -16,11 +18,14 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   late Future<User> userFuture;
+
   int currentPage = 0;
+  int classeId = 0;
+  int etudiantId = 0;
 
   List<Widget> pages = const [
-    HomePage(),
     ProfilPage(),
+    HomePage(),
   ];
 
   @override
@@ -43,10 +48,13 @@ class _DashboardState extends State<Dashboard> {
           future: userFuture,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
+              classeId = snapshot.data!.classe.id!;
+              etudiantId = snapshot.data!.etudiant.id;
+
               return Row(
                 children: [
                   Text(snapshot.data!.nom),
-                  Text(snapshot.data!.classe.id.toString()), //id de la classe
+                  // Text(" ${snapshot.data!.classe.id}"),
                 ],
               );
             } else if (snapshot.hasError) {
@@ -63,11 +71,19 @@ class _DashboardState extends State<Dashboard> {
           ),
         ],
       ),
-      body: pages[currentPage],
+      body: ClasseIdEtudiantIdProvider(
+        classeIdEtudiantId: ClasseIdEtudiantId(
+          classeId: classeId,
+          etudiantId: etudiantId,
+        ),
+        classeId: 0,
+        etudiantId: 0,
+        child: pages[currentPage],
+      ),
       bottomNavigationBar: NavigationBar(
         destinations: const [
+          NavigationDestination(icon: Icon(Icons.person), label: "profil"),
           NavigationDestination(icon: Icon(Icons.home), label: "Acceuille"),
-          NavigationDestination(icon: Icon(Icons.person), label: "profil")
         ],
         onDestinationSelected: (int index) {
           setState(() {

@@ -11,3 +11,13 @@ errorSnackBar(BuildContext context, String text) {
     ),
   );
 }
+
+succsessSnackBar(BuildContext context, String text) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      backgroundColor: Colors.green,
+      content: Text(text),
+      duration: const Duration(seconds: 1),
+    ),
+  );
+}

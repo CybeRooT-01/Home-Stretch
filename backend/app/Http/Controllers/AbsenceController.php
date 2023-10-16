@@ -25,7 +25,7 @@ class AbsenceController extends Controller
         if ($absence != null) {
             return response()->json([
                 'message' => 'Vous avez deja marquée votre presence pour ce cours'
-            ], 400);
+            ], 200);
         }
 
         Absence::create([
