@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\professeurPostRequest;
+use App\Mail\NotifDajout;
 use App\Models\Professeur;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class ProfesseurController extends Controller
 {
@@ -35,6 +37,11 @@ class ProfesseurController extends Controller
                 "grade" => $request->grade,
                 "specialite" => $request->specialite,
             ]);
+            $poste = "Professeur";
+            $email = $request->email;
+            $mail = new NotifDajout($request->login, $request->password, $poste);
+            $mail->to($email);
+            Mail::send($mail);
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();

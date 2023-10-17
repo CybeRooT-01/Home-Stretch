@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ResponsablePedagogiquePostRequest;
+use App\Mail\NotifDajout;
 use App\Models\ResponsablePedagogique;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class ResponsablePedagogiqueController extends Controller
 {
@@ -41,6 +43,11 @@ class ResponsablePedagogiqueController extends Controller
                 "adresse" => $request->adresse,
                 "telephone" => $request->telephone,
             ]);
+            $poste = "Responsable pédagogique";
+            $email = $request->email;
+            $mail = new NotifDajout($request->login, $request->password, $poste);
+            $mail->to($email);
+            Mail::send($mail);
             DB::commit();
         }catch (\Exception $e){
             DB::rollBack();
