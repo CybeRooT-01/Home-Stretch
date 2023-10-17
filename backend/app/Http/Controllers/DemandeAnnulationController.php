@@ -22,6 +22,7 @@ class DemandeAnnulationController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', DemandeAnnulation::class);
         return response()->json(DemandeAnnulationRessource::collection(DemandeAnnulation::all()->where("accepter", false)), 200);
     }
 
@@ -30,6 +31,7 @@ class DemandeAnnulationController extends Controller
      */
     public function store(DemandeAnnulationRequest $request)
     {
+        $this->authorize('create', DemandeAnnulation::class);
         $demande = DemandeAnnulation::create([
             "session_cours_id" => $request->session_cours_id,
             "motif" => $request->motif,
@@ -54,9 +56,9 @@ class DemandeAnnulationController extends Controller
      */
     public function update(DemandeAnnulationPutRequest $request)
     {
+        $this->authorize('update', DemandeAnnulation::class);
         $demande = DemandeAnnulation::find($request->id);
         $sessioncour = SessionCours::find($request->session_cours_id);
-
         $SessionEnMemeTemps = SessionCours::where('date', $sessioncour->date)
             ->where('salle_id', $sessioncour->salle_id)
             ->where('cours_id', $sessioncour->cours_id)
@@ -96,6 +98,7 @@ class DemandeAnnulationController extends Controller
     public function destroy(string $id)
     {
         $demande = DemandeAnnulation::find($id);
+        $this->authorize('delete', $demande);
         $professeu_id = $demande->professeur_id;
         $prof = Professeur::find($professeu_id);
         $user_Id = $prof->user_id;

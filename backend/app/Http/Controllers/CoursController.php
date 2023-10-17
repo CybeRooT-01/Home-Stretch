@@ -11,10 +11,12 @@ class CoursController extends Controller
 {
     public function index()
     {
+        $this->authorize('viewAny', Cours::class);
         $cours = Cours::all();
         return response()->json(CoursRessources::collection($cours), 200);
     }
     public function store(CoursRequest $request){
+        $this->authorize('viewAny', Cours::class);
         $quota_horaire_globale = $request->quota_horaire_globale;
         $module_id = $request->module_id;
         $professeur_id = $request->professeur_id;

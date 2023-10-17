@@ -67,6 +67,10 @@ class User extends Authenticatable
     {
         return $this->hasOne(Etudiant::class);
     }
+    public function hasRole(string $role)
+    {
+        return $this->role->nom == $role;
+    }
 
 
 

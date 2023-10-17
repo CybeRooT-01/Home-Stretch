@@ -13,11 +13,13 @@ class ProfesseurController extends Controller
 {
     public function index(): jsonResponse
     {
+        $this->authorize('viewAny', Professeur::class);
         return response()->json(Professeur::all(), 200);
     }
 
     public function store(professeurPostRequest $request)
     {
+        $this->authorize('viewAny', Professeur::class);
         DB::beginTransaction();
         try {
             $user = User::create([

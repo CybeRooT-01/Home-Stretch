@@ -23,12 +23,14 @@ class SessionCoursController extends Controller
 {
     public function index(): JsonResponse
     {
+        $this->authorize('viewAny', SessionCours::class);
         $sessionCour = SessionCoursRessource::collection(SessionCours::all()->where('validee', false));
         return response()->json($sessionCour, 200);
     }
 
     public function store(PlanificationCoursRequest $request)
     {
+        $this->authorize('viewAny', SessionCours::class);
         $coursId = $request->input('cour_id');
         $salleId = $request->input('salle_id');
         $classeIds = (array)$request->input('classe_id');
@@ -152,12 +154,13 @@ class SessionCoursController extends Controller
     public function update(string $id)
     {
         $sessionCours = SessionCours::find($id);
-
+        $this->authorize('update', $sessionCours);
         if (!$sessionCours) {
             return response()->json([
                 'message' => "session cours non trouvé",
             ], 404);
         }
+
         if ($sessionCours->validee) {
             return response()->json([
                 'message' => "session cours deja validée",

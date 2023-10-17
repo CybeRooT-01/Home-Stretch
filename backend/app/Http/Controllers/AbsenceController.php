@@ -14,10 +14,12 @@ class AbsenceController extends Controller
     public function index()
     {
 //        return Absence::all()->where('presence',false)->where('justifiee',false);
+        $this->authorize('viewAny', Absence::class);
         return AbsenceRessource::collection(Absence::all()->where('presence', false)->where('justifiee', false));
     }
     public function store(AbsencePostRequest $request):jsonResponse
     {
+        $this->authorize('create', Absence::class);
         $sessionCoursId = $request->sessionCours_id;
         $etudiantId = $request->etudiant_id;
         $date = $request->date;
@@ -40,6 +42,7 @@ class AbsenceController extends Controller
     public function update(string $id):jsonResponse
     {
         $absence = Absence::find($id);
+        $this->authorize('update', $absence);
         if(!$absence){
             return response()->json([
                 'message' => 'Cette absence n\'existe pas'

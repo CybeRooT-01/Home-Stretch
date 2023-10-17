@@ -17,6 +17,7 @@ class AttacheController extends Controller
      */
     public function index():jsonResponse
     {
+        $this->authorize('viewAny', Attache::class);
         return response()->json(Attache::all(), 200);
     }
 
@@ -25,6 +26,7 @@ class AttacheController extends Controller
      */
     public function store(AtachePostRequest $request)
     {
+        $this->authorize('viewAny', Attache::class);
         DB::beginTransaction();
         try {
             $user = User::create([

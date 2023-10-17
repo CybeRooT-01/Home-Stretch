@@ -15,6 +15,7 @@ class ResponsablePedagogiqueController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', ResponsablePedagogique::class);
         Return response()->json(ResponsablePedagogique::all(), 200);
 
     }
@@ -24,6 +25,7 @@ class ResponsablePedagogiqueController extends Controller
      */
     public function store(ResponsablePedagogiquePostRequest $request)
     {
+        $this->authorize('viewAny', ResponsablePedagogique::class);
         DB::beginTransaction();
         try {
             $user = User::create([

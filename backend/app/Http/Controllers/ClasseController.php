@@ -11,9 +11,11 @@ class ClasseController extends Controller
 {
     public function index():jsonResponse
     {
+        $this->authorize('viewAny', Classe::class);
         return response()->json(Classe::all()->where('etat',true),200);
     }
     public function store(ClassePostRequest $request){
+        $this->authorize('viewAny', Classe::class);
         Classe::create([
             'libelle' => $request->libelle,
             'annee_id' => $request->annee_id,

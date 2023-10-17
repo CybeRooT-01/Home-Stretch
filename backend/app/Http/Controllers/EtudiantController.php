@@ -15,6 +15,7 @@ class EtudiantController extends Controller
 {
     public function inscription(Request $request)
     {
+        $this->authorize('viewAny', Etudiant::class);
         $etudiants = [];
         $inscriptions = [];
         $inscriptionsErronees = [];

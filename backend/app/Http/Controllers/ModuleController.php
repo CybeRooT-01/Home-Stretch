@@ -10,10 +10,12 @@ class ModuleController extends Controller
 {
     public function index():jsonResponse
     {
+        $this->authorize('viewAny', Module::class);
         return response()->json(Module::all(),200);
     }
 
     public function store(Request $request){
+        $this->authorize('create', Module::class);
         Module::create([
             'libelle' => $request->libelle,
         ]);
