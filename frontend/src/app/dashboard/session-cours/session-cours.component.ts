@@ -161,7 +161,6 @@ export class SessionCoursComponent implements OnInit {
   isCourSelected: boolean = false;
   handleDateSelect(arg: any) {
     console.log(arg)
-
     let argToDisplay = arg.event._def.extendedProps;
     console.log(argToDisplay)
     this.profToDisplay = argToDisplay.prof;

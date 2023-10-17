@@ -13,6 +13,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 import { MatSelectModule } from '@angular/material/select';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NgxMatTimepickerModule} from 'ngx-mat-timepicker';
@@ -87,7 +88,8 @@ const authRoutes: Routes = [
     MatSelectModule,
     ReactiveFormsModule,
     FormsModule,
-    NgxMatTimepickerModule
+    NgxMatTimepickerModule,
+    MatCheckboxModule
   ],
   providers: [],
 })

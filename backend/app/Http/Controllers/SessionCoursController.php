@@ -37,6 +37,7 @@ class SessionCoursController extends Controller
         $date = $request->input('date');
         $heureDebut = $request->input('heure_debut');
         $heureFin = $request->input('heure_fin');
+        $enligne = $request->input('enligne');
 
         $inscriptions = Inscription::whereIn('classe_id', $classeIds)->get();
 
@@ -51,12 +52,14 @@ class SessionCoursController extends Controller
         $cours = Cours::find($coursId);
         $nombreInscritPourCetteClasse = count($inscriptions);
         $nombreDePlaceDansLaSalle = $salle->capacite;
-
-        if ($nombreInscritPourCetteClasse > $nombreDePlaceDansLaSalle) {
-            return response()->json([
-                'message' => "La salle ne peut pas contenir tous les étudiants de cette classe",
-            ], 400);
+        if (!$enligne){
+            if ($nombreInscritPourCetteClasse > $nombreDePlaceDansLaSalle) {
+                return response()->json([
+                    'message' => "La salle ne peut pas contenir tous les étudiants de cette classe",
+                ], 400);
+            }
         }
+
 
         if ($heureDebut >= $heureFin) {
             return response()->json([
