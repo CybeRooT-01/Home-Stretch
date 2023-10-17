@@ -15,6 +15,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {NgxMatTimepickerModule} from 'ngx-mat-timepicker';
 import { CoursComponent } from './cours/cours.component';
 import {MatTableModule} from '@angular/material/table';
 import {RoleProfRPEtudiantGuards} from "../shared/Guards/RoleProfRPEtudiantGuards";
@@ -86,6 +87,7 @@ const authRoutes: Routes = [
     MatSelectModule,
     ReactiveFormsModule,
     FormsModule,
+    NgxMatTimepickerModule
   ],
   providers: [],
 })

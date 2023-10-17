@@ -22,6 +22,7 @@ export class PlanificationComponent implements OnInit {
   classes: Classes[] = [];
   formulaire: FormGroup;
 
+
   constructor(private sessioncoursservice: SessionCoursService, private salleservice: SallesService, private classeservice: ClasseService, private courService: CoursService, private fb: FormBuilder) {
     this.formulaire = this.fb.group({
       salle: ['', Validators.required],
@@ -47,8 +48,8 @@ export class PlanificationComponent implements OnInit {
         classe_id: formData.classe,
         salle_id: formData.salle,
         date: formData.date,
-        heure_debut: formData.heureDebut,
-        heure_fin: formData.heureFin,
+        heure_debut: formData.heureDebut+':00',
+        heure_fin: formData.heureFin+':00',
       }
       console.log(data)
       this.sessioncoursservice.create(data).subscribe((data: any) => {

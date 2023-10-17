@@ -33,6 +33,7 @@
     "flowbite": "^1.8.1",
     "gapi": "^0.0.3",
     "gapi-client": "^0.0.3",
+    "ngx-mat-timepicker": "^16.1.1",
     "rxjs": "~7.8.0",
     "sweetalert2": "^11.7.31",
     "tslib": "^2.3.0",

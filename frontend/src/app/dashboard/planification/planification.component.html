@@ -2,24 +2,39 @@
   <span class="text-red-600"
         *ngIf="formulaire.hasError('heureDebutSuperieurAHeureFin') && formulaire.get('heureDebut')?.touched && formulaire.get('heureFin')?.touched"
   >L'heure de debut Ne peux pas etre superieur ou egal a l'heure de fin</span>
-  <div class="grid md:grid-cols-2 md:gap-6">
-    <mat-form-field>
-      <mat-label>Heure de debut</mat-label>
-      <mat-select formControlName="heureDebut">
-        <mat-option *ngFor="let hdebut of heureDebut" [value]="hdebut.value">
-          {{ hdebut.heure }}
-        </mat-option>
-      </mat-select>
+  <div class="flex flex-col md:grid-cols-2 md:gap-6">
+    <div class="flex justify-between">
+    <mat-form-field class="w-[600px]">
+      <input matInput
+             formControlName="heureDebut"
+             name="selected_time_B"
+             [ngxMatTimepicker]="pickerB"
+             placeholder="08:00"
+             format="24.0"
+             readonly />
+      <mat-icon matSuffix
+                (click)="pickerB.open()">
+        watch_later
+      </mat-icon>
     </mat-form-field>
-    <mat-form-field>
-      <mat-label>Heure de fin</mat-label>
-      <mat-select formControlName="heureFin">
-        <mat-option *ngFor="let hfin of HeureFin" [value]="hfin.value">
-          {{ hfin.heure }}
-        </mat-option>
-      </mat-select>
+    <ngx-mat-timepicker color="primary" #pickerB></ngx-mat-timepicker>
+    <mat-form-field class="w-[600px]">
+      <input matInput
+             formControlName="heureFin"
+             name="selected_time_A"
+             [ngxMatTimepicker]="pickerA"
+             placeholder="17:00"
+             format="24.0"
+             readonly />
+      <mat-icon matSuffix
+                (click)="pickerA.open()">
+        watch_later
+      </mat-icon>
     </mat-form-field>
-    <mat-form-field>
+    <ngx-mat-timepicker color="primary" #pickerA></ngx-mat-timepicker>
+    </div>
+<div class="flex justify-between">
+    <mat-form-field class="w-[600px]">
       <mat-label>Selectionnez une salle</mat-label>
       <mat-select formControlName="salle">
         <mat-option *ngFor="let salle of salles" [value]="salle.id">
@@ -27,15 +42,15 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
-
-        <mat-form-field>
+        <mat-form-field class="w-[600px]">
           <mat-label>Selectionnez une classe</mat-label>
           <mat-select formControlName="classe" multiple style="outline: none; border: none">
             <mat-option *ngFor="let classe of classes" [value]="classe.id">{{ classe.libelle }}</mat-option>
           </mat-select>
         </mat-form-field>
-
-    <mat-form-field>
+</div>
+<div class="flex justify-between">
+    <mat-form-field class="w-[600px]">
       <mat-label>Selectionnez un cour</mat-label>
       <mat-select formControlName="cours">
         <mat-option *ngFor="let cour of cours" [value]="cour.id">
@@ -55,6 +70,7 @@
       <mat-datepicker #picker></mat-datepicker>
       <mat-error *ngIf="formulaire.get('date')?.hasError('dateInvalide')">La date doit être supérieure à la date actuelle.</mat-error>
     </mat-form-field>
+</div>
   </div>
 
   <button
@@ -66,3 +82,7 @@
     Submit
   </button>
 </form>
+
+
+
+
