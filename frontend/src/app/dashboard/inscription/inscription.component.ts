@@ -13,10 +13,19 @@ export class InscriptionComponent{
   excelData: any;
   fileSelected: boolean = false;
 
-  constructor(private etudiantservice: EtudiantService) {}
 
+  constructor(private etudiantservice: EtudiantService) {}
   readExcel(event: any) {
     let file = event.target.files[0];
+    let extension = file.name.split('.').pop();
+    if (extension !== 'xlsx'){
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Veuillez choisir un format excel XSLX!',
+      });
+      return;
+    }
     this.fileSelected = true;
     let fileReader = new FileReader();
     fileReader.readAsBinaryString(file);
@@ -24,6 +33,7 @@ export class InscriptionComponent{
       let workbook = XLSX.read(fileReader.result, { type: 'binary' });
       let sheetNames = workbook.SheetNames;
       this.excelData = XLSX.utils.sheet_to_json(workbook.Sheets[sheetNames[0]]);
+      console.log(this.excelData)
     };
   }
   inscriptionErronee: any[] = [];
