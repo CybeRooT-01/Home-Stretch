@@ -30,7 +30,7 @@ class SessionCoursController extends Controller
 
     public function store(PlanificationCoursRequest $request)
     {
-        $this->authorize('viewAny', SessionCours::class);
+        $this->authorize('create', SessionCours::class);
         $coursId = $request->input('cour_id');
         $salleId = $request->input('salle_id');
         $classeIds = (array)$request->input('classe_id');

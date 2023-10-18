@@ -13,7 +13,7 @@ class SessionCoursPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->role_id === 1;
+        return true;
     }
 
     /**
@@ -21,7 +21,6 @@ class SessionCoursPolicy
      */
     public function view(User $user, SessionCours $sessionCours): bool
     {
-        return $user->role_id === 1;
     }
 
     /**
@@ -29,7 +28,7 @@ class SessionCoursPolicy
      */
     public function create(User $user): bool
     {
-        //
+        return $user->role_id === 1;
     }
 
     /**

@@ -59,6 +59,7 @@ class _HomePageState extends State<HomePage> {
           final filteredSessions = sessions!.where((session) {
             return session.classe!.id == classeId;
           }).toList();
+          filteredSessions.sort((a, b) => b.date!.compareTo(a.date!));
           return ListView.builder(
             itemCount: filteredSessions.length,
             itemBuilder: (context, index) {
