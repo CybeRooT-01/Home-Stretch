@@ -21,7 +21,7 @@ class ProfPolicy
      */
     public function view(User $user, Professeur $professeur): bool
     {
-        return $user->role_id === 1;
+//        return $user->role_id === 1;
 
     }
 

@@ -67,8 +67,8 @@ Route::middleware('auth:api')->group(function () {
 //    Route::get('/user',[UserController::class, 'getCurrentUser']);
 
   Route::get('users', [UserController::class, 'allUsers']);
-
   Route::post('logout', function (Request $request) {
+//      return $request->user();
     $request->user()->token()->revoke();
     return response()->json(['message' => 'Logged out'], 200);
   });

@@ -19,7 +19,6 @@ class EtudiantController extends Controller
         $etudiants = [];
         $inscriptions = [];
         $inscriptionsErronees = [];
-
         foreach ($request->json() as $eleve) {
             $classeId = $eleve['classe_id'];
             $classe = Classe::find($classeId);
@@ -50,7 +49,7 @@ class EtudiantController extends Controller
                         "role_id" => 3,
                         "email" => $eleve['email'],
                     ]);
-                }else{
+                } else {
                     $user->update([
                         "nom" => $eleve['nomComplet'],
                         "login" => $eleve['email'],
@@ -67,7 +66,7 @@ class EtudiantController extends Controller
                         "email" => $eleve['email'],
                         "matricule" => $eleve['matricule'],
                     ]);
-                }else{
+                } else {
                     $etudiant->update([
                         'user_id' => $user->id,
                         "nomComplet" => $eleve['nomComplet'],
@@ -75,16 +74,28 @@ class EtudiantController extends Controller
                         "matricule" => $eleve['matricule'],
                     ]);
                 }
-                $inscription = Inscription::create([
-                    "etudiant_id" => $etudiant->id,
-                    "annee_id" => $eleve['annee_id'],
-                    "classe_id" => $eleve['classe_id'],
-                ]);
+
+                $inscriptionExistante = Inscription::where('etudiant_id', $etudiant->id)
+                    ->where('annee_id', $eleve['annee_id'])
+                    ->where('classe_id', $eleve['classe_id'])
+                    ->first();
+                if (!$inscriptionExistante) {
+                    $inscription = Inscription::create([
+                        "etudiant_id" => $etudiant->id,
+                        "annee_id" => $eleve['annee_id'],
+                        "classe_id" => $eleve['classe_id'],
+                    ]);
+                    $inscriptions[] = $inscription;
+                } else {
+                    $inscriptionsErronees[] = [
+                        "eleve" => $eleve,
+                        "message" => "L'étudiant est déjà inscrit pour cette année et cette classe."
+                    ];
+                }
+
                 $etudiants[] = $etudiant;
-                $inscriptions[] = $inscription;
 
                 DB::commit();
-
             } catch (\Exception $e) {
                 DB::rollBack();
                 $inscriptionsErronees[] = [
@@ -93,6 +104,7 @@ class EtudiantController extends Controller
                 ];
             }
         }
+
         return response()->json([
             "message" => "Inscriptions effectuées avec succès",
             "etudiants" => $etudiants,
@@ -101,5 +113,94 @@ class EtudiantController extends Controller
             "status" => 201
         ]);
     }
+
+//    public function inscription(Request $request)
+//    {
+//        $this->authorize('viewAny', Etudiant::class);
+//        $etudiants = [];
+//        $inscriptions = [];
+//        $inscriptionsErronees = [];
+//
+//        foreach ($request->json() as $eleve) {
+//            $classeId = $eleve['classe_id'];
+//            $classe = Classe::find($classeId);
+//            if (!$classe) {
+//                $inscriptionsErronees[] = [
+//                    "eleve" => $eleve,
+//                    "message" => "La classe n'a pas été trouvée"
+//                ];
+//                continue;
+//            }
+//
+//            if ($classe->etat == false) {
+//                $inscriptionsErronees[] = [
+//                    "eleve" => $eleve,
+//                    "message" => "La classe n'est pas encore ouverte"
+//                ];
+//                continue;
+//            }
+//
+//            DB::beginTransaction();
+//            try {
+//                $user = User::where('nom', $eleve['nomComplet'])->first();
+//                if (!$user) {
+//                    $user = User::create([
+//                        "nom" => $eleve['nomComplet'],
+//                        "login" => $eleve['email'],
+//                        "password" => "password",
+//                        "role_id" => 3,
+//                        "email" => $eleve['email'],
+//                    ]);
+//                }else{
+//                    $user->update([
+//                        "nom" => $eleve['nomComplet'],
+//                        "login" => $eleve['email'],
+//                        "password" => "password",
+//                        "role_id" => 3,
+//                        "email" => $eleve['email'],
+//                    ]);
+//                }
+//                $etudiant = Etudiant::where('matricule', $eleve['matricule'])->first();
+//                if (!$etudiant) {
+//                    $etudiant = Etudiant::create([
+//                        'user_id' => $user->id,
+//                        "nomComplet" => $eleve['nomComplet'],
+//                        "email" => $eleve['email'],
+//                        "matricule" => $eleve['matricule'],
+//                    ]);
+//                }else{
+//                    $etudiant->update([
+//                        'user_id' => $user->id,
+//                        "nomComplet" => $eleve['nomComplet'],
+//                        "email" => $eleve['email'],
+//                        "matricule" => $eleve['matricule'],
+//                    ]);
+//                }
+//                $inscription = Inscription::create([
+//                    "etudiant_id" => $etudiant->id,
+//                    "annee_id" => $eleve['annee_id'],
+//                    "classe_id" => $eleve['classe_id'],
+//                ]);
+//                $etudiants[] = $etudiant;
+//                $inscriptions[] = $inscription;
+//
+//                DB::commit();
+//
+//            } catch (\Exception $e) {
+//                DB::rollBack();
+//                $inscriptionsErronees[] = [
+//                    "eleve" => $eleve,
+//                    "message" => "Erreur d'inscription : " . $e->getMessage(),
+//                ];
+//            }
+//        }
+//        return response()->json([
+//            "message" => "Inscriptions effectuées avec succès",
+//            "etudiants" => $etudiants,
+//            "inscriptions" => $inscriptions,
+//            "inscriptions_erronees" => $inscriptionsErronees,
+//            "status" => 201
+//        ]);
+//    }
 
 }

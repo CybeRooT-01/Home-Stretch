@@ -55,7 +55,6 @@ export abstract class RestService<T extends RestResponse<T>> {
     const httpOptions = {
       headers: { 'Content-Type': 'application/json' },
     };
-
     return this.http
       .put<T>(
         Environnements.api.baseUrl + `/${this.uri()}/${data.id}`,
