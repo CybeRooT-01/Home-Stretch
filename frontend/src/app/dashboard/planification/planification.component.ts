@@ -8,6 +8,7 @@ import {BirahimValidator} from "../../validators/birahim.validator";
 import {Classes} from "../../interfaces/Classes";
 import {ClasseService} from "../../services/classe.service";
 import {SessionCoursService} from "../../services/session-cours.service";
+import notification from "sweetalert2";
 
 @Component({
   selector: 'app-planification',
@@ -64,18 +65,18 @@ export class PlanificationComponent implements OnInit {
         enligne: formData.enligne,
       }
       console.log(data)
-      // this.sessioncoursservice.create(data).subscribe((data: any) => {
-      //     console.log(data);
-      //
-      //   }, (error: any) => {
-      //     console.error('Une erreur s\'est produite lors de la création :', error);
-      //     notification.fire({
-      //       title: 'Erreur',
-      //       icon: 'error',
-      //       text: error.message
-      //     });
-      //   }
-      // )
+      this.sessioncoursservice.create(data).subscribe((data: any) => {
+          console.log(data);
+
+        }, (error: any) => {
+          console.error('Une erreur s\'est produite lors de la création :', error);
+          notification.fire({
+            title: 'Erreur',
+            icon: 'error',
+            text: error.message
+          });
+        }
+      )
     } else {
       console.log('Formulaire invalide');
     }

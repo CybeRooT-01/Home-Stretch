@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\InscriptionRequests;
+use App\Mail\NotifDajout;
 use App\Models\Classe;
 use App\Models\Etudiant;
 use App\Models\Inscription;
@@ -10,6 +11,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Mail;
 
 class EtudiantController extends Controller
 {
@@ -49,6 +51,11 @@ class EtudiantController extends Controller
                         "role_id" => 3,
                         "email" => $eleve['email'],
                     ]);
+                    $email = $eleve['email'];
+                    $poste = "Etudiant";
+                    $mail = new NotifDajout($eleve['email'], $eleve['password'], $poste);
+                    $mail->to($email);
+                    Mail::send($mail);
                 } else {
                     $user->update([
                         "nom" => $eleve['nomComplet'],
