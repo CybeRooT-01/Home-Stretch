@@ -15,7 +15,10 @@ class AbsenceController extends Controller
     {
 //        return Absence::all()->where('presence',false)->where('justifiee',false);
         $this->authorize('viewAny', Absence::class);
-        return AbsenceRessource::collection(Absence::all()->where('presence', false)->where('justifiee', false));
+        return AbsenceRessource::collection(
+            Absence::all()->where('presence', false)
+                ->where('justifiee', false)
+        );
     }
     public function store(AbsencePostRequest $request):jsonResponse
     {

@@ -10,6 +10,7 @@ import notification from "sweetalert2";
 export class AbsencesComponent implements OnInit {
 
   absences: any[] = [];
+  absencesFiltred: any[] = [];
 
   constructor(private absenceService: AbsenceService) {
   }
@@ -17,7 +18,12 @@ export class AbsencesComponent implements OnInit {
   ngOnInit(): void {
     this.absenceService.All().subscribe((data: any) => {
       this.absences = data.data;
-      console.log(this.absences)
+      this.absences.map((item: any) => {
+        if (item.sessioncours.validee === 0){
+          this.absencesFiltred.push(item);
+        }
+      })
+      console.log(this.absencesFiltred)
     })
   }
 
