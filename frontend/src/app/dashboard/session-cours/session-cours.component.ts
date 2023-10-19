@@ -38,6 +38,7 @@ export class SessionCoursComponent implements OnInit {
   ngOnInit(): void {
     this.authService.getCurrentUser().subscribe((response: any) => {
       console.log(response.data)
+      // this.serviceUserService.setUser(response.data);
       this.isProf = response.data.role.includes('Professeur');
       this.isAttache = response.data.role.includes('Attache');
       this.isEtudiant = response.data.role.includes('Etudiant');

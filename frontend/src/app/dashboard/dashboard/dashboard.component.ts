@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { AuthService } from 'src/app/services/auth.service';
-import { RoleRPGuard } from '../../shared/Guards/RoleRPGuard';
-import { ActivatedRouteSnapshot, RouterStateSnapshot} from '@angular/router';
+import {Component,OnInit,} from '@angular/core';
+import {AuthService} from 'src/app/services/auth.service';
+import {RoleRPGuard} from '../../shared/Guards/RoleRPGuard';
+import {ActivatedRouteSnapshot, RouterStateSnapshot} from '@angular/router';
 import {RoleAttacheGuards} from "../../shared/Guards/RoleAttacheGuards";
+
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -13,10 +15,19 @@ export class DashboardComponent implements OnInit {
   showLinkforAttache: boolean = false;
   user: any;
   menuOuvert: boolean = false;
-  constructor(private authService: AuthService, private roleRPGuard: RoleRPGuard, private roleAttacheGuards:RoleAttacheGuards) {}
+
+  constructor(private authService: AuthService,
+              private roleRPGuard: RoleRPGuard,
+              private roleAttacheGuards: RoleAttacheGuards,) {
+  }
+
+
   emptyRouteSnapshot: ActivatedRouteSnapshot = {} as ActivatedRouteSnapshot;
   emptyRouterStateSnapshot: RouterStateSnapshot = {} as RouterStateSnapshot;
   ngOnInit() {
+    this.authService.getCurrentUser().subscribe((response: any) => {
+      this.user = response.data;
+    });
     this.showLink = this.roleRPGuard
       .canActivate(this.emptyRouteSnapshot, this.emptyRouterStateSnapshot)
       .subscribe((response: any) => {
@@ -33,6 +44,5 @@ export class DashboardComponent implements OnInit {
   }
   toggleOptons() {
     this.menuOuvert = !this.menuOuvert;
-
   }
 }
